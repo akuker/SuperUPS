@@ -20,3 +20,4 @@
 | 0x0F   | R1 resistor value     |
 | 0x10   | R2 resistor value     |
   
+![](Microcontroller_Flowchart.png)
