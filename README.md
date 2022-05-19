@@ -4,6 +4,8 @@ This is a fork of the original Supercapacitor UPS board for a Raspberry Pi by Sc
 
 This fork is intended to improve producability, documentation and provide tighter integration with the RaSCSI project. This project does NOT require a RaSCSI to function.
 
+## Very early 3D renderings
+
 <a href="docs/board_top.png"><img src="docs/board_top.png" style="width: 250px" /></a>
 <a href="docs/board_bottom.png"><img src="docs/board_bottom.png" style="width: 250px" /></a>
 <a href="docs/board_angle.png"><img src="docs/board_angle.png" style="width: 250px" /></a>
