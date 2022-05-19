@@ -30,6 +30,8 @@ An ATTiny85 is used as the controller for the UPS. The microcontroller monitors 
 
 The microcontroller is also responsible for noticing when power has been restored, and turning the load back on.
 
+[Design Overview](docs/microcontroller_design.md)
+
 # Linux Daemon
 
 A Linux daemon, running on the raspberry pi, monitors the voltage by making i2c queries to the ups board's microcontroller. If the daemon sees the incoming voltage drop, then it will initiate shutdown, by running the `shutdown` command. The shutdown command will terminate processes, unmount the filesystem, etc. 
