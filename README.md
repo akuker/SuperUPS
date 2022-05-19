@@ -1,3 +1,5 @@
+<img src="docs/logo.png" style="height: 200px"/>
+
 # Supercapacitor UPS board for Raspberry Pi
 
 This is a fork of the original Supercapacitor UPS board for a Raspberry Pi by Scott Baker, http://www.smbaker.com/
