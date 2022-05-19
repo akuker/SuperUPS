@@ -8,9 +8,6 @@ This fork is intended to improve producability, documentation and provide tighte
 <a href="docs/board_bottom.png"><img src="docs/board_bottom.png" style="width: 250px" /></a>
 <a href="docs/board_angle.png"><img src="docs/board_angle.png" style="width: 250px" /></a>
 
-
-![](docs/board_top.png)
-
 ## Why not other Supercapacitor designs?
 
 Most of the existing Raspberry Pi UPS designs rely on GPIO pins to alert the Raspberry Pi of a power loss. The RaSCSI design makes heavy usage of the GPIO pins, so there are not sufficient spare to allow this. This design will utilize a microcontroller to manage the power and allow the Rapsberry Pi to read the status through I2C.
