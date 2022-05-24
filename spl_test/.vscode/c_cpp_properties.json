@@ -1,0 +1,42 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/Users/akuker/Downloads/SuperUPS/spl_test/include",
+                "/Users/akuker/Downloads/SuperUPS/spl_test/src",
+                "/Users/akuker/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/Users/akuker/Downloads/SuperUPS/spl_test/include",
+                    "/Users/akuker/Downloads/SuperUPS/spl_test/src",
+                    "/Users/akuker/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc",
+                    ""
+                ]
+            },
+            "defines": [
+                "F_CPU=16000000L",
+                "PLATFORMIO=60001",
+                "STM8S_BLACK",
+                "STM8S105",
+                "USE_STDPERIPH_DRIVER",
+                "USE_STDINT",
+                ""
+            ],
+            "compilerPath": "/Users/akuker/.platformio/packages/toolchain-sdcc/bin/sdcc",
+            "compilerArgs": [
+                "-mstm8",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}

@@ -1,0 +1,47 @@
+// AUTOMATICALLY GENERATED FILE. PLEASE DO NOT MODIFY IT MANUALLY
+//
+// PIO Unified Debugger
+//
+// Documentation: https://docs.platformio.org/page/plus/debugging.html
+// Configuration: https://docs.platformio.org/page/projectconf/section_env_debug.html
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "platformio-debug",
+            "request": "launch",
+            "name": "PIO Debug",
+            "executable": "/Users/akuker/Downloads/SuperUPS/spl_test/.pio/build/stm8sblack/firmware.elf",
+            "projectEnvName": "stm8sblack",
+            "toolchainBinDir": "/Users/akuker/.platformio/packages/tool-stm8binutils/bin",
+            "internalConsoleOptions": "openOnSessionStart",
+            "svdPath": "/Users/akuker/.platformio/platforms/ststm8/misc/svd/STM8S105K4.svd",
+            "preLaunchTask": {
+                "type": "PlatformIO",
+                "task": "Pre-Debug"
+            }
+        },
+        {
+            "type": "platformio-debug",
+            "request": "launch",
+            "name": "PIO Debug (skip Pre-Debug)",
+            "executable": "/Users/akuker/Downloads/SuperUPS/spl_test/.pio/build/stm8sblack/firmware.elf",
+            "projectEnvName": "stm8sblack",
+            "toolchainBinDir": "/Users/akuker/.platformio/packages/tool-stm8binutils/bin",
+            "internalConsoleOptions": "openOnSessionStart",
+            "svdPath": "/Users/akuker/.platformio/platforms/ststm8/misc/svd/STM8S105K4.svd"
+        },
+        {
+            "type": "platformio-debug",
+            "request": "launch",
+            "name": "PIO Debug (without uploading)",
+            "executable": "/Users/akuker/Downloads/SuperUPS/spl_test/.pio/build/stm8sblack/firmware.elf",
+            "projectEnvName": "stm8sblack",
+            "toolchainBinDir": "/Users/akuker/.platformio/packages/tool-stm8binutils/bin",
+            "internalConsoleOptions": "openOnSessionStart",
+            "svdPath": "/Users/akuker/.platformio/platforms/ststm8/misc/svd/STM8S105K4.svd",
+            "loadMode": "manual"
+        }
+    ]
+}
