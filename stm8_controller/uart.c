@@ -6,12 +6,13 @@
  * UART example based upon jukkas example:
  *     https://github.com/jukkas/stm8-sdcc-examples
  * 
- * /
+ */
 
-/* Simple "Hello World" UART output  */
 #include <string.h>
 #include <stdint.h>
-#include "stm8s.h"
+#include <stm8s.h>
+#include <stm8s_adc1.h>
+#include "ups_state_machine.h"
 
 /* Simple busy loop delay */
 void delay(unsigned long count) {
@@ -34,6 +35,8 @@ int uart_writec(const char ch) {
     return 1; // Bytes sent
 }
 
+uint16_t ADC_Read(ADC1_Channel_TypeDef);
+
 int main(void)
 {
     /* Set clock to full speed (16 Mhz) */
@@ -48,9 +51,28 @@ int main(void)
 
     GPIO_Init(GPIOB, GPIO_PIN_5, GPIO_MODE_OUT_OD_LOW_SLOW);
 
+    ups_init();
+
     uint8_t counter = 0;
 
     while(1) {
+        uint16_t result_AIN3 = ADC_Read(ADC1_CHANNEL_4);
+
+        uart_writec(result_AIN3/10000 + '0');
+        uart_writec((result_AIN3 % 10000) / 1000 + '0');
+        uart_writec((result_AIN3 % 1000)/100 + '0');
+        uart_writec((result_AIN3 % 100)/10 + '0');
+        uart_writec(result_AIN3 % 10 + '0');
+        uart_writec(' ');
+        
+        result_AIN3 = ADC_Read(ADC1_CHANNEL_3);
+        uart_writec(result_AIN3/10000 + '0');
+        uart_writec((result_AIN3 % 10000) / 1000 + '0');
+        uart_writec((result_AIN3 % 1000)/100 + '0');
+        uart_writec((result_AIN3 % 100)/10 + '0');
+        uart_writec(result_AIN3 % 10 + '0');
+        uart_writec(' ');
+
         uart_writec(counter + '0');
         counter++;
         if(counter > 9)

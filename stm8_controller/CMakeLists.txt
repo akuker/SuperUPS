@@ -22,8 +22,22 @@ add_definitions(-DSTM8S103)
 
 add_executable(main
     uart.c
+    ups_state_machine.c
+    i2c_register_data.c
     # I2c_slave_interrupt.c
     # stm8s_it.c
+    ${SPL_SRC_PATH}/stm8s_adc1_ClearFlag.c
+    ${SPL_SRC_PATH}/stm8s_adc1_Cmd.c
+    ${SPL_SRC_PATH}/stm8s_adc1_DeInit.c
+    ${SPL_SRC_PATH}/stm8s_adc1_Init.c
+    ${SPL_SRC_PATH}/stm8s_adc1_GetFlagStatus.c
+
+    ${SPL_SRC_PATH}/stm8s_adc1_ExternalTriggerConfig.c
+    ${SPL_SRC_PATH}/stm8s_adc1_StartConversion.c
+    ${SPL_SRC_PATH}/stm8s_adc1_PrescalerConfig.c
+    ${SPL_SRC_PATH}/stm8s_adc1_ConversionConfig.c
+    ${SPL_SRC_PATH}/stm8s_adc1_GetConversionValue.c
+    ${SPL_SRC_PATH}/stm8s_adc1_SchmittTriggerConfig.c
     ${SPL_SRC_PATH}/stm8s_gpio_Init.c
     ${SPL_SRC_PATH}/stm8s_gpio_WriteLow.c
     ${SPL_SRC_PATH}/stm8s_gpio_WriteHigh.c
@@ -33,7 +47,8 @@ add_executable(main
     # ${SPL_SRC_PATH}/stm8s_tim1_TimeBaseInit.c
     # ${SPL_SRC_PATH}/stm8s_clk_GetClockFreq.c
     # ${SPL_SRC_PATH}/stm8s_clk_HSIPrescalerConfig.c
-    # ${SPL_SRC_PATH}/stm8s_clk_private.c
+    ${SPL_SRC_PATH}/stm8s_clk_private.c
+    ${SPL_SRC_PATH}/stm8s_clk_PeripheralClockConfig.c
     # ${SPL_SRC_PATH}/stm8s_uart1_Cmd.c
     # ${SPL_SRC_PATH}/stm8s_uart1_Init.c
     # ${SPL_SRC_PATH}/stm8s_uart1_ITConfig.c
