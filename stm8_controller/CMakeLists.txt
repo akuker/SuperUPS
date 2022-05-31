@@ -21,12 +21,10 @@ include_directories(. BEFORE)
 add_definitions(-DSTM8S103)
 
 add_executable(main
-    uart.c
+    main.c
     ups_state_machine.c
     i2c_register_data.c
     i2c_slave.c
-    # I2c_slave_interrupt.c
-    # stm8s_it.c
     ${SPL_SRC_PATH}/stm8s_adc1_ClearFlag.c
     ${SPL_SRC_PATH}/stm8s_adc1_Cmd.c
     ${SPL_SRC_PATH}/stm8s_adc1_DeInit.c
@@ -42,12 +40,6 @@ add_executable(main
     ${SPL_SRC_PATH}/stm8s_gpio_Init.c
     ${SPL_SRC_PATH}/stm8s_gpio_WriteLow.c
     ${SPL_SRC_PATH}/stm8s_gpio_WriteHigh.c
-    # ${SPL_SRC_PATH}/stm8s_tim1_GetCounter.c
-    # ${SPL_SRC_PATH}/stm8s_tim1_Cmd.c
-    # ${SPL_SRC_PATH}/stm8s_tim4_ClearITPendingBit.c
-    # ${SPL_SRC_PATH}/stm8s_tim1_TimeBaseInit.c
-    # ${SPL_SRC_PATH}/stm8s_clk_GetClockFreq.c
-    # ${SPL_SRC_PATH}/stm8s_clk_HSIPrescalerConfig.c
     ${SPL_SRC_PATH}/stm8s_clk_private.c
     ${SPL_SRC_PATH}/stm8s_clk_PeripheralClockConfig.c
     # ${SPL_SRC_PATH}/stm8s_uart1_Cmd.c
