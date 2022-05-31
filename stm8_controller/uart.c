@@ -14,6 +14,8 @@
 #include <stm8s_adc1.h>
 #include "ups_state_machine.h"
 #include "i2c_slave.h"
+#include "i2c_register_data.h"
+#include "ups_constants.h"
 
 /* Simple busy loop delay */
 void delay(unsigned long count) {
@@ -89,7 +91,10 @@ int main(void)
         
         result_AIN3 = ADC_Read(ADC1_CHANNEL_3);
         uart_write_uint16(result_AIN3);
-        
+
+        i2c_register_values[VIN_HIGH] = ADC_Read(ADC1_CHANNEL_3);
+        i2c_register_values[VUPS_HIGH] = ADC_Read(ADC1_CHANNEL_4);
+
         uart_writec(counter + '0');
         counter++;
         if(counter > 9)
