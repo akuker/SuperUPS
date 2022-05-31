@@ -1,3 +1,13 @@
+/*
+ *
+ *
+ *
+ * 
+ * UART example based upon jukkas example:
+ *     https://github.com/jukkas/stm8-sdcc-examples
+ * 
+ * /
+
 /* Simple "Hello World" UART output  */
 #include <string.h>
 #include <stdint.h>
@@ -18,6 +28,12 @@ int uart_write(const char *str) {
     return(i); // Bytes sent
 }
 
+int uart_writec(const char ch) {
+    while(!(UART1->SR & UART1_SR_TXE)); // !Transmit data register empty
+    UART1->DR = ch;
+    return 1; // Bytes sent
+}
+
 int main(void)
 {
     /* Set clock to full speed (16 Mhz) */
@@ -30,8 +46,19 @@ int main(void)
     // 9600 baud: UART_DIV = 16000000/9600 ~ 1667 = 0x0683
     UART1->BRR2 = 0x03; UART1->BRR1 = 0x68; // 0x0683 coded funky way (see ref manual)
 
+    GPIO_Init(GPIOB, GPIO_PIN_5, GPIO_MODE_OUT_OD_LOW_SLOW);
+
+    uint8_t counter = 0;
+
     while(1) {
-        uart_write("Hello World!\r\n");
-        delay(400000L);
+        uart_writec(counter + '0');
+        counter++;
+        if(counter > 9)
+            counter = 0;
+        uart_write(" Hello World!\r\n");
+        delay(100000L);
+        GPIO_WriteLow(GPIOB, GPIO_PIN_5);
+        delay(100000L);
+        GPIO_WriteHigh(GPIOB, GPIO_PIN_5);
     }
 }

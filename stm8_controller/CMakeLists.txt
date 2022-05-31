@@ -1,3 +1,6 @@
+# Based upon the demo-spl project from:
+#   https://github.com/ulikoehler/stm8s-discovery-sdcc-blink
+
 cmake_minimum_required(VERSION 3.2)
 
 set(CMAKE_C_OUTPUT_EXTENSION ".rel")
@@ -21,9 +24,9 @@ add_executable(main
     uart.c
     # I2c_slave_interrupt.c
     # stm8s_it.c
-    # ${SPL_SRC_PATH}/stm8s_gpio_Init.c
-    # ${SPL_SRC_PATH}/stm8s_gpio_WriteLow.c
-    # ${SPL_SRC_PATH}/stm8s_gpio_WriteHigh.c
+    ${SPL_SRC_PATH}/stm8s_gpio_Init.c
+    ${SPL_SRC_PATH}/stm8s_gpio_WriteLow.c
+    ${SPL_SRC_PATH}/stm8s_gpio_WriteHigh.c
     # ${SPL_SRC_PATH}/stm8s_tim1_GetCounter.c
     # ${SPL_SRC_PATH}/stm8s_tim1_Cmd.c
     # ${SPL_SRC_PATH}/stm8s_tim4_ClearITPendingBit.c
