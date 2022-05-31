@@ -13,6 +13,7 @@
 #include <stm8s.h>
 #include <stm8s_adc1.h>
 #include "ups_state_machine.h"
+#include "i2c_slave.h"
 
 /* Simple busy loop delay */
 void delay(unsigned long count) {
@@ -35,6 +36,23 @@ int uart_writec(const char ch) {
     return 1; // Bytes sent
 }
 
+void uart_write_uint16(uint16_t val) {
+    (void)uart_writec(val/10000 + '0');
+    (void)uart_writec((val % 10000) / 1000 + '0');
+    (void)uart_writec((val % 1000)/100 + '0');
+    (void)uart_writec((val % 100)/10 + '0');
+    (void)uart_writec(val % 10 + '0');
+    (void)uart_writec(' ');
+}
+
+void uart_write_uint8(uint8_t val) {
+    (void)uart_writec((val % 1000)/100 + '0');
+    (void)uart_writec((val % 100)/10 + '0');
+    (void)uart_writec(val % 10 + '0');
+    (void)uart_writec(' ');
+}
+
+
 uint16_t ADC_Read(ADC1_Channel_TypeDef);
 
 int main(void)
@@ -50,29 +68,20 @@ int main(void)
     UART1->BRR2 = 0x03; UART1->BRR1 = 0x68; // 0x0683 coded funky way (see ref manual)
 
     GPIO_Init(GPIOB, GPIO_PIN_5, GPIO_MODE_OUT_OD_LOW_SLOW);
-
+    Init_I2C();
     ups_init();
-
+    
+	/* Enable general interrupts */
+	// enableInterrupts();
     uint8_t counter = 0;
 
     while(1) {
         uint16_t result_AIN3 = ADC_Read(ADC1_CHANNEL_4);
-
-        uart_writec(result_AIN3/10000 + '0');
-        uart_writec((result_AIN3 % 10000) / 1000 + '0');
-        uart_writec((result_AIN3 % 1000)/100 + '0');
-        uart_writec((result_AIN3 % 100)/10 + '0');
-        uart_writec(result_AIN3 % 10 + '0');
-        uart_writec(' ');
+        uart_write_uint16(result_AIN3);
         
         result_AIN3 = ADC_Read(ADC1_CHANNEL_3);
-        uart_writec(result_AIN3/10000 + '0');
-        uart_writec((result_AIN3 % 10000) / 1000 + '0');
-        uart_writec((result_AIN3 % 1000)/100 + '0');
-        uart_writec((result_AIN3 % 100)/10 + '0');
-        uart_writec(result_AIN3 % 10 + '0');
-        uart_writec(' ');
-
+        uart_write_uint16(result_AIN3);
+        
         uart_writec(counter + '0');
         counter++;
         if(counter > 9)

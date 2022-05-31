@@ -53,8 +53,8 @@ void handleRegMosfet()
         mosfetOff();
     }
 }
-extern uint16_t result;
 
+// https://circuitdigest.com/microcontroller-projects/adc-on-stm8s-using-c-compiler-reading-multiple-adc-values-and-displaying-on-lcd
 uint16_t ADC_Read(ADC1_Channel_TypeDef ADC_Channel_Number)
 {
     uint16_t result = 0;
