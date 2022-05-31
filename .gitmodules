@@ -1,0 +1,3 @@
+[submodule "stm8_controller/external/spl"]
+	path = stm8_controller/external/spl
+	url = https://github.com/ulikoehler/STM8S-SDCC-SPL
