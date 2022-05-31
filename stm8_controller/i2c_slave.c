@@ -1,10 +1,11 @@
 #include "i2c_slave.h"
+#include "i2c_register_data.h"
 #define MAX_BUFFER  32
 
    u8 u8_My_Buffer[MAX_BUFFER];
    u8 *u8_MyBuffp;
    u8 MessageBegin;
-
+volatile u8 i2c_counter = 0;
 // ********************** Data link function ****************************
 // * These functions must be modified according to your application neeeds *
 // * See AN document for more precision
@@ -13,23 +14,26 @@
 	void I2C_transaction_begin(void)
 	{
 		MessageBegin = TRUE;
+				i2c_counter++;
 	}
 	void I2C_transaction_end(void)
 	{
 		//Not used in this example
+
+
 	}
 	void I2C_byte_received(u8 u8_RxData)
 	{
 		if (MessageBegin == TRUE  &&  u8_RxData < MAX_BUFFER) {
-			u8_MyBuffp= &u8_My_Buffer[u8_RxData];
+			u8_MyBuffp= &i2c_register_values[u8_RxData];
 			MessageBegin = FALSE;
 		}
-    else if(u8_MyBuffp < &u8_My_Buffer[MAX_BUFFER])
+    else if(u8_MyBuffp < &i2c_register_values[MAX_BUFFER])
       *(u8_MyBuffp++) = u8_RxData;
 	}
 	u8 I2C_byte_write(void)
 	{
-		if (u8_MyBuffp < &u8_My_Buffer[MAX_BUFFER])
+		if (u8_MyBuffp < &i2c_register_values[MAX_BUFFER])
 			return *(u8_MyBuffp++);
 		else
 			return 0x00;

@@ -54,6 +54,7 @@ void uart_write_uint8(uint8_t val) {
 
 
 uint16_t ADC_Read(ADC1_Channel_TypeDef);
+extern u8 i2c_counter;
 
 int main(void)
 {
@@ -93,6 +94,8 @@ int main(void)
         counter++;
         if(counter > 9)
             counter = 0;
+        uart_writec(' ');
+        uart_write_uint8(i2c_counter);
         uart_write(" Hello World!\r\n");
         delay(100000L);
         GPIO_WriteLow(GPIOB, GPIO_PIN_5);
