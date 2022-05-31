@@ -10,7 +10,7 @@ set(CMAKE_EXE_LINKER_FLAGS_INIT "")
 
 project(STM8Blink C)
 SET(CMAKE_C_FLAGS "-mstm8 --std-c99")
-set(SPL_PATH STM8S-SDCC-SPL/)
+set(SPL_PATH external/spl/)
 set(SPL_SRC_PATH ${SPL_PATH}/src)
 include_directories(${SPL_PATH}/inc ${SPL_PATH}/conf AFTER)
 include_directories(. BEFORE)
@@ -18,9 +18,9 @@ include_directories(. BEFORE)
 add_definitions(-DSTM8S103)
 
 add_executable(main.ihx
-    main.c
-    I2c_slave_interrupt.c
-    stm8s_it.c
+    uart.c
+    # I2c_slave_interrupt.c
+    # stm8s_it.c
     ${SPL_SRC_PATH}/stm8s_gpio_Init.c
     ${SPL_SRC_PATH}/stm8s_gpio_WriteLow.c
     ${SPL_SRC_PATH}/stm8s_gpio_WriteHigh.c
