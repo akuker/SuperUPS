@@ -38,15 +38,8 @@
 
 // ********************** Data link interrupt handler *******************
 
-int uart_writec(const char ch);
-
-#ifdef _RAISONANCE_
-void I2C_Slave_check_event(void) interrupt 19 {
-#elseif _COSMIC_
-@far @interrupt void I2C_Slave_check_event(void) {
-#else
 void I2C_Slave_check_event(void) __interrupt(19) {
-#endif
+
 	static u8 sr1;					
 	static u8 sr2;
 	static u8 sr3;
@@ -55,7 +48,6 @@ void I2C_Slave_check_event(void) __interrupt(19) {
 sr1 = I2C->SR1;
 sr2 = I2C->SR2;
 sr3 = I2C->SR3;
-uart_writec('z');
 
 /* Communication error? */
   if (sr2 & (I2C_SR2_WUFH | I2C_SR2_OVR |I2C_SR2_ARLO |I2C_SR2_BERR))
@@ -108,21 +100,6 @@ uart_writec('z');
 
 void Init_I2C (void)
 {
-	/* Init GPIO for I2C use */
-    // STM8S103F2 uses:
-    //  PB5 - I2C_SDA
-    //  PB4 - I2C SCL
-
-    for(uint8_t i=0; i<8; i++){
-        SetBit(GPIOB->CR1, i);
-        ClrBit(GPIOB->DDR, i);
-        ClrBit(GPIOB->CR2, i);
-    }
-
-	// GPIOB->CR1 |= 0x06;
-	// GPIOB->DDR &= ~0x06;
-	// GPIOB->CR2 &= ~0x06;
-
 	#ifdef I2C_slave_7Bits_Address
 		/* Set I2C registers for 7Bits Address */
 		I2C->CR1 |= 0x01;				        	// Enable I2C peripheral

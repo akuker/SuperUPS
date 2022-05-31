@@ -67,12 +67,19 @@ int main(void)
     // 9600 baud: UART_DIV = 16000000/9600 ~ 1667 = 0x0683
     UART1->BRR2 = 0x03; UART1->BRR1 = 0x68; // 0x0683 coded funky way (see ref manual)
 
+    uart_write("---------------- Starting up.... \r\n");
+
+	/* Init GPIO for I2C use */
+	GPIOE->CR1 |= 0x06;
+	GPIOE->DDR &= ~0x06;
+	GPIOE->CR2 &= ~0x06;
+
     GPIO_Init(GPIOB, GPIO_PIN_5, GPIO_MODE_OUT_OD_LOW_SLOW);
     Init_I2C();
     ups_init();
     
 	/* Enable general interrupts */
-	// enableInterrupts();
+	enableInterrupts();
     uint8_t counter = 0;
 
     while(1) {

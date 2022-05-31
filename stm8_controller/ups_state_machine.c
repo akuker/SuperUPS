@@ -107,8 +107,8 @@ void ups_init() {
     // ADC1_StartConversion();
 
 CLK_PeripheralClockConfig(CLK_PERIPHERAL_ADC, ENABLE); //Enable Peripheral Clock for ADC
-GPIO_Init (GPIOD, GPIO_PIN_2, GPIO_MODE_IN_FL_IT);
-GPIO_Init (GPIOD, GPIO_PIN_3, GPIO_MODE_IN_FL_IT);
+// GPIO_Init (GPIOD, GPIO_PIN_2, GPIO_MODE_IN_FL_IT);
+// GPIO_Init (GPIOD, GPIO_PIN_3, GPIO_MODE_IN_FL_IT);
 
 
     // while(ADC1_GetFlagStatus(ADC1_FLAG_EOC) == FALSE);
