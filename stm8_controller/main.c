@@ -9,6 +9,7 @@
  */
 
 #include <string.h>
+#include <stdio.h>
 #include <stdint.h>
 #include <stm8s.h>
 #include <stm8s_adc1.h>
@@ -21,6 +22,15 @@
 void delay(unsigned long count) {
     while (count--)
         nop();
+}
+
+int putchar (int c)
+{
+  /* Write a character to the UART1 */
+  UART1_SendData8(c);
+  /* Loop until the end of transmission */
+  while (UART1_GetFlagStatus(UART1_FLAG_TXE) == RESET);
+  return (c);
 }
 
 int uart_write(const char *str) {
@@ -63,21 +73,20 @@ int main(void)
     /* Set clock to full speed (16 Mhz) */
     CLK->CKDIVR = 0;
 
-    // Setup UART1 (TX=D5)
-    UART1->CR2 |= UART1_CR2_TEN; // Transmitter enable
-    // UART1_CR2 |= UART_CR2_REN; // Receiver enable
-    UART1->CR3 &= ~(UART1_CR3_STOP); // 1 stop bit
-    // 9600 baud: UART_DIV = 16000000/9600 ~ 1667 = 0x0683
-    UART1->BRR2 = 0x03; UART1->BRR1 = 0x68; // 0x0683 coded funky way (see ref manual)
+
+    UART1_DeInit();
+    UART1_Init(9600, UART1_WORDLENGTH_8D, 
+                UART1_STOPBITS_1, UART1_PARITY_NO, 
+                UART1_SYNCMODE_CLOCK_DISABLE, UART1_MODE_TXRX_ENABLE);
+    printf("\n\rUART1 Example :retarget the C library printf()/getchar() functions to the UART\n\r");
+    printf("\n\rEnter Text\n\r");
 
     uart_write("---------------- Starting up.... \r\n");
 
-	/* Init GPIO for I2C use */
-	GPIOE->CR1 |= 0x06;
-	GPIOE->DDR &= ~0x06;
-	GPIOE->CR2 &= ~0x06;
 
-    GPIO_Init(GPIOB, GPIO_PIN_5, GPIO_MODE_OUT_OD_LOW_SLOW);
+    // TODO: This doesn't work when the i2c controller is enabled....
+    // GPIO_Init(GPIOB, GPIO_PIN_5, GPIO_MODE_OUT_PP_HIGH_SLOW);
+
     Init_I2C();
     ups_init();
     
@@ -87,13 +96,15 @@ int main(void)
 
     while(1) {
         uint16_t result_AIN3 = ADC_Read(ADC1_CHANNEL_4);
-        uart_write_uint16(result_AIN3);
+        printf("%04X ", result_AIN3);
+        // uart_write_uint16(result_AIN3);
         
         result_AIN3 = ADC_Read(ADC1_CHANNEL_3);
-        uart_write_uint16(result_AIN3);
+        printf("%04X ", result_AIN3);
+        // uart_write_uint16(result_AIN3);
 
-        i2c_register_values[VIN_HIGH] = ADC_Read(ADC1_CHANNEL_3);
-        i2c_register_values[VUPS_HIGH] = ADC_Read(ADC1_CHANNEL_4);
+        i2c_register_values[VIN_HIGH] = (uint8_t)(ADC_Read(ADC1_CHANNEL_3) >> 8);
+        i2c_register_values[VUPS_HIGH] = (uint8_t)(ADC_Read(ADC1_CHANNEL_4) >> 8);
 
         uart_writec(counter + '0');
         counter++;

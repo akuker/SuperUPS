@@ -40,13 +40,13 @@ add_executable(main
     ${SPL_SRC_PATH}/stm8s_gpio_Init.c
     ${SPL_SRC_PATH}/stm8s_gpio_WriteLow.c
     ${SPL_SRC_PATH}/stm8s_gpio_WriteHigh.c
+    ${SPL_SRC_PATH}/stm8s_clk_GetClockFreq.c
     ${SPL_SRC_PATH}/stm8s_clk_private.c
     ${SPL_SRC_PATH}/stm8s_clk_PeripheralClockConfig.c
-    # ${SPL_SRC_PATH}/stm8s_uart1_Cmd.c
-    # ${SPL_SRC_PATH}/stm8s_uart1_Init.c
-    # ${SPL_SRC_PATH}/stm8s_uart1_ITConfig.c
-    # ${SPL_SRC_PATH}/stm8s_uart1_SendData8.c
-    # ${SPL_SRC_PATH}/stm8s_tim1_TimeBaseInit.c
+    ${SPL_SRC_PATH}/stm8s_uart1_DeInit.c
+    ${SPL_SRC_PATH}/stm8s_uart1_Init.c
+    ${SPL_SRC_PATH}/stm8s_uart1_GetFlagStatus.c
+    ${SPL_SRC_PATH}/stm8s_uart1_SendData8.c
    
 )
 

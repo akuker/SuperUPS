@@ -104,6 +104,10 @@ sr3 = I2C->SR3;
 
 void Init_I2C (void)
 {
+			/* Init GPIO for I2C use */
+		GPIOE->CR1 |= 0x06;
+		GPIOE->DDR &= ~0x06;
+		GPIOE->CR2 &= ~0x06;
 	#ifdef I2C_slave_7Bits_Address
 		/* Set I2C registers for 7Bits Address */
 		I2C->CR1 |= 0x01;				        	// Enable I2C peripheral
