@@ -1,12 +1,25 @@
+//---------------------------------------------------------------------------
+//
+//	Raspberry Pi SuperUPS
+//
+//	Copyright (C) 2020 Scott Baker
+//	Copyright (C) 2022 akuker
+//
+//	[ I2C data array ]
+//
+//  This is the "master" copy of the information that can be requested by
+//  the I2C master. The I2C interrupt routine will read the data from this
+//  array and return it to the master.
+//---------------------------------------------------------------------------
 #pragma once
 
 #include <stdint.h>
 
 typedef enum
 {
-    VIN_LOW = (uint8_t)2,
+    // VIN_LOW = (uint8_t)2,
     VIN_HIGH = (uint8_t)3,
-    VUPS_LOW = (uint8_t)4,
+    // VUPS_LOW = (uint8_t)4,
     VUPS_HIGH = (uint8_t)5,
     MOSFET = (uint8_t)6,
     ON_THRESH = (uint8_t)7,

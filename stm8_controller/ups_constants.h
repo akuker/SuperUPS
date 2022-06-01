@@ -1,25 +1,24 @@
+//---------------------------------------------------------------------------
+//
+//	Raspberry Pi SuperUPS
+//
+//	Copyright (C) 2020 Scott Baker
+//	Copyright (C) 2022 akuker
+//
+//	[ Constants for SuperUPS processing ]
+//
+//---------------------------------------------------------------------------
+
 #pragma once
 #include <stdint.h>
-
-#define R1 100
-#define R2 200
-
-#define VCONV(x) (x * R2 / (R1+R2))
-#define VCONV_DIG(x) VCONV(x)*256/2.56
-
-#define GET_ON_THRESH uint8_t(VCONV_DIG(ON_THRESH_DESIRED))
-#define GET_POWERUP_THRESH uint8_t(VCONV_DIG(POWERUP_THRESH_DESIRED))
-#define GET_OFF_THRESH uint8_t(VCONV_DIG(OFF_THRESH_DESIRED))
-#define GET_SHUTDOWN_THRESH uint8_t(VCONV_DIG(SHUTDOWN_THRESH_DESIRED))
 
 #define ERROR_CRC 0xFF
 #define ERROR_SIZE 0xFE
 #define ERROR_UNINITIALIZED 0xFD
 #define ERROR_SUCCESS 0
 
-#define MAX_SAMPLES 8
-
-typedef enum {
+typedef enum
+{
     STATE_DISABLED = (uint8_t)0,
     STATE_WAIT_OFF = (uint8_t)1,
     STATE_WAIT_ON = (uint8_t)2,
@@ -29,7 +28,6 @@ typedef enum {
     STATE_FAIL_SHUTDOWN_DELAY = (uint8_t)6,
     STATE_CYCLE_DELAY = (uint8_t)7,
 } ups_state_type;
-
 
 #define VAL_MOSFET i2c_register_values[MOSFET]
 #define VAL_VIN_HIGH i2c_register_values[VIN_HIGH]

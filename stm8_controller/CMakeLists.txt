@@ -25,6 +25,8 @@ add_executable(main
     ups_state_machine.c
     i2c_register_data.c
     i2c_slave.c
+    adc_utilities.c
+    uart_utilities.c
     ${SPL_SRC_PATH}/stm8s_adc1_ClearFlag.c
     ${SPL_SRC_PATH}/stm8s_adc1_Cmd.c
     ${SPL_SRC_PATH}/stm8s_adc1_DeInit.c

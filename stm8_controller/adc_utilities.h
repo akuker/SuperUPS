@@ -5,11 +5,14 @@
 //	Copyright (C) 2020 Scott Baker
 //	Copyright (C) 2022 akuker
 //
-//	[ SuperUPS master state machine ]
+//	[ SuperUPS main ]
+//
+//  UART example based upon jukkas example:
+//     https://github.com/jukkas/stm8-sdcc-examples
 //
 //---------------------------------------------------------------------------
 
 #pragma once
 
-void ups_step();
-void ups_init();
+void adc_init(void);
+void adc_step(void);

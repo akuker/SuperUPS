@@ -1,35 +1,35 @@
+//---------------------------------------------------------------------------
+//
+//	Raspberry Pi SuperUPS
+//
+//  Copyright (C) 2009 STMicroelectronics
+//	Copyright (C) 2020 Scott Baker
+//	Copyright (C) 2022 akuker
+//
+//	[ I2C slave handler ]
+//
+//  The I2C slave handling is based upon STMicroelectronics AN3281
+//     https://www.st.com/en/embedded-software/stsw-stm8004.html
+//
+//  Includes the routines for handling the I2C requests from the master.
+//  The i2c_slave_check_event function is registered in the interrupt table
+//  and will be called when there is an I2C transaction for this slave
+//  device (based upon the address).
+//
+//---------------------------------------------------------------------------
+
 #pragma once
 #include "stm8s.h"
+#include "stm8s_itc.h"
 
+#define SLAVE_ADDRESS 0x51
 
-/********************** EXTERNAL FUNCTION **********************************/  
-	void transaction_begin(void);
-	void transaction_end(void);
-	void byte_received(u8 u8_RxData);
-	u8 byte_write(void);
-	void Init_I2C(void);
-	
+void i2c_init(void);
+// Different compilers have different syntax for registering an interrupt
 #ifdef _RAISONANCE_
-    void I2C_Slave_check_event(void) interrupt 19;
+void I2C_Slave_check_event(void) interrupt ITC_IRQ_I2C;
 #elseif _COSMIC_
-    @far @interrupt void I2C_Slave_check_event(void);
+@far @interrupt void I2C_Slave_check_event(void);
 #else
-    void I2C_Slave_check_event(void) __interrupt(19);
+void I2C_Slave_check_event(void) __interrupt(ITC_IRQ_I2C);
 #endif
-
-	
-/********************** I2C configuration variables *****************************/  
-	/* Define I2C Address mode ---------------------------------------------------*/
-	#define I2C_slave_7Bits_Address
-
-	/* Define Slave Address  -----------------------------------------------------*/
-	#ifdef I2C_slave_10Bits_Address
-		#define SLAVE_ADDRESS 0x3F0
-	#endif 
-
-	#ifdef I2C_slave_7Bits_Address
-		#define SLAVE_ADDRESS 0x51
-	#endif
-
-	
-/******************* (C) COPYRIGHT 2009 STMicroelectronics *****END OF FILE****/

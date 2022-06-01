@@ -1,9 +1,23 @@
+//---------------------------------------------------------------------------
+//
+//	Raspberry Pi SuperUPS
+//
+//	Copyright (C) 2020 Scott Baker
+//	Copyright (C) 2022 akuker
+//
+//	[ I2C data array ]
+//
+//  This is the "master" copy of the information that can be requested by
+//  the I2C master. The I2C interrupt routine will read the data from this
+//  array and return it to the master.
+//---------------------------------------------------------------------------
+
 #include "i2c_register_data.h"
 #include "ups_constants.h"
 
 volatile uint8_t i2c_register_values[] =
 {
-    0x0,        // reserved
+    0x0,        // reserveds
     0x1,        // reserved
     0x0,        // vin - low (reserved)
     0x0,        // vin - high
@@ -19,6 +33,6 @@ volatile uint8_t i2c_register_values[] =
     0x0,        // run counter
     POWERUP_THRESH, // powerup threshold
     SHUTDOWN_THRESH, // software shutdown threshold
-    R1/100,     // R1 resistor value
-    R2/100,     // R2 resistor value
+    0x0,     // R1 resistor value
+    0x0,     // R2 resistor value
 };
