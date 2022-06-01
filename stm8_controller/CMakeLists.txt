@@ -16,17 +16,17 @@ SET(CMAKE_C_FLAGS "-mstm8 --std-c99")
 set(SPL_PATH external/spl/)
 set(SPL_SRC_PATH ${SPL_PATH}/src)
 include_directories(${SPL_PATH}/inc ${SPL_PATH}/conf AFTER)
-include_directories(. BEFORE)
+include_directories(./inc BEFORE)
 # Configure which STM8S we are using
 add_definitions(-DSTM8S103)
 
 add_executable(main
-    main.c
-    ups_state_machine.c
-    i2c_register_data.c
-    i2c_slave.c
-    adc_utilities.c
-    uart_utilities.c
+    src/main.c
+    src/ups_state_machine.c
+    src/i2c_register_data.c
+    src/i2c_slave.c
+    src/adc_utilities.c
+    src/uart_utilities.c
     ${SPL_SRC_PATH}/stm8s_adc1_ClearFlag.c
     ${SPL_SRC_PATH}/stm8s_adc1_Cmd.c
     ${SPL_SRC_PATH}/stm8s_adc1_DeInit.c
