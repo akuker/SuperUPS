@@ -30,6 +30,7 @@ void delay(unsigned long count)
 }
 
 extern u8 i2c_counter;
+void handleRegMosfet();
 
 int main(void)
 {
@@ -38,6 +39,9 @@ int main(void)
 
     // TODO: This doesn't work when the i2c controller is enabled....
     // GPIO_Init(GPIOB, GPIO_PIN_5, GPIO_MODE_OUT_PP_HIGH_SLOW);
+    // GPIO_Init(GPIOC, GPIO_PIN_3, GPIO_MODE_OUT_PP_HIGH_SLOW);
+
+    
 
     uart_init();
     i2c_init();
@@ -51,8 +55,9 @@ int main(void)
     while (1)
     {
         adc_step();
-        printf("%04X ", i2c_register_values[VIN_HIGH]);
-        printf("%04X ", i2c_register_values[VUPS_HIGH]);
+        printf("VIN:%04X ", i2c_register_values[VIN_HIGH]);
+        printf("VUPS:%04X ", i2c_register_values[VUPS_HIGH]);
+        printf("VOUT:%04X ", i2c_register_values[VOUT_HIGH]);
 
         uart_writec(counter + '0');
         counter++;
@@ -61,9 +66,13 @@ int main(void)
         uart_writec(' ');
         uart_write_uint8(i2c_counter);
         uart_write(" Hello World!\r\n");
+        // i2c_register_values[MOSFET] = 0;
+        // handleRegMosfet();
+        // delay(100000L);
+        i2c_register_values[MOSFET] = 1;
+        handleRegMosfet();
         delay(100000L);
-        GPIO_WriteLow(GPIOB, GPIO_PIN_5);
-        delay(100000L);
-        GPIO_WriteHigh(GPIOB, GPIO_PIN_5);
+        // delay(100000L);
+        // GPIO_WriteHigh(GPIOC, GPIO_PIN_3);
     }
 }

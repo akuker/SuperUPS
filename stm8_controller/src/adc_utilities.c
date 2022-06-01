@@ -30,6 +30,7 @@ static uint8_t sample_ptr = 0;
 static uint8_t num_samples = 0;
 static uint8_t vin_samples[MAX_ADC_SAMPLES];
 static uint8_t vups_samples[MAX_ADC_SAMPLES];
+static uint8_t vout_samples[MAX_ADC_SAMPLES];
 
 static uint8_t computeAverage(uint8_t *samples)
 {
@@ -74,6 +75,7 @@ void adc_init()
 {
     i2c_register_values[VIN_HIGH] = 0;
     i2c_register_values[VUPS_HIGH] = 0;
+    i2c_register_values[VOUT_HIGH] = 0;
     i2c_register_values[R1_VALUE] = R1;
     i2c_register_values[R2_VALUE] = R2;
     // Enable Peripheral Clock for ADC
@@ -84,6 +86,7 @@ void adc_step()
 {
     vin_samples[sample_ptr] = read_adc(ADC1_CHANNEL_4);
     vups_samples[sample_ptr] = read_adc(ADC1_CHANNEL_3);
+    vout_samples[sample_ptr] = read_adc(ADC1_CHANNEL_2);
     sample_ptr = (sample_ptr + 1) % MAX_ADC_SAMPLES;
     num_samples++;
     if (num_samples > MAX_ADC_SAMPLES)
@@ -93,4 +96,5 @@ void adc_step()
 
     i2c_register_values[VIN_HIGH] = computeAverage(vin_samples);
     i2c_register_values[VUPS_HIGH] = computeAverage(vups_samples);
+    i2c_register_values[VOUT_HIGH] = computeAverage(vout_samples);
 }

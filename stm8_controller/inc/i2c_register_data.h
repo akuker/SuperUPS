@@ -19,7 +19,7 @@ typedef enum
 {
     // VIN_LOW = (uint8_t)2,
     VIN_HIGH = (uint8_t)3,
-    // VUPS_LOW = (uint8_t)4,
+    VOUT_HIGH = (uint8_t)4,
     VUPS_HIGH = (uint8_t)5,
     MOSFET = (uint8_t)6,
     ON_THRESH = (uint8_t)7,
