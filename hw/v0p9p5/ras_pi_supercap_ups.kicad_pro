@@ -389,9 +389,6 @@
           "Net-(C2-Pad2)",
           "Net-(C3-Pad2)",
           "Net-(C4-Pad2)",
-          "Net-(C6-Pad1)",
-          "Net-(D1-Pad1)",
-          "Net-(J10-Pad2)",
           "VIN"
         ],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
@@ -413,9 +410,6 @@
         "name": "5vPower",
         "nets": [
           "+5V",
-          "Net-(C7-Pad1)",
-          "Net-(J6-Pad4)",
-          "Net-(JP1-Pad1)",
           "POW_OUT"
         ],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
@@ -488,6 +482,10 @@
     [
       "c783ab4c-6f9b-478c-bda9-be5294b6d6a7",
       "Raspberry Pi Connectors"
+    ],
+    [
+      "8f754e91-02e2-4214-a3e4-a044379db8a6",
+      "Buck Converter"
     ]
   ],
   "text_variables": {}
