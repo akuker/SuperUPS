@@ -461,7 +461,7 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "ras_pi_supercap_ups.step",
       "vrml": ""
     },
     "page_layout_descr_file": ""
