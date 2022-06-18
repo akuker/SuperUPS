@@ -9,65 +9,11 @@
 //
 //---------------------------------------------------------------------------
 
-#include <stdint.h>
-#include <stm8s.h>
 #include "ups_constants.h"
 #include "i2c_register_data.h"
 
-inline void mosfetOff()
-{
-    GPIO_WriteHigh(GPIOC, GPIO_PIN_3);
-}
-
-inline void mosfetOn()
-{
-    GPIO_WriteLow(GPIOC, GPIO_PIN_3);
-}
-void delay(unsigned long count);
-void handleRegMosfet()
-{
-    static uint8_t prev_state = 0xFF;
-
-    if (prev_state != i2c_register_values[MOSFET])
-    {
-        if (i2c_register_values[MOSFET])
-        {
-            // low will turn the mosfet on
-            mosfetOn();
-
-            // Slow-start the mosfet.
-            // Otherwise, the sudden current inrush will cause the dc/dc
-            // converter to trip into overcurrent mode and shut off.
-            uint8_t i;
-            for (i = 0; i < 200; i++)
-            {
-                mosfetOn();
-                delay(10);
-                mosfetOff();
-                delay(10);
-            }
-            for (i = 0; i < 200; i++)
-            {
-                mosfetOn();
-                delay(20);
-                mosfetOff();
-                delay(10);
-            }
-            mosfetOn();
-        }
-        else
-        {
-            // high will turn the mosfet off
-            mosfetOff();
-        }
-    }
-}
-
 void ups_init()
 {
-
-    GPIO_Init(GPIOC, GPIO_PIN_3, GPIO_MODE_OUT_OD_LOW_FAST);
-    mosfetOff();
     VAL_STATE = STATE_POWERUP;
 }
 
@@ -100,7 +46,6 @@ void ups_step()
         {
             VAL_COUNTDOWN = 0;
             VAL_MOSFET = 1;
-            handleRegMosfet();
             VAL_STATE = STATE_RUNNING;
         }
         break;
@@ -109,7 +54,6 @@ void ups_step()
         if ((VAL_VIN_HIGH <= VAL_OFF_THRESH) && (VAL_VUPS_HIGH <= VAL_OFF_THRESH))
         {
             VAL_MOSFET = 0;
-            handleRegMosfet();
             VAL_FAIL_SHUTDOWN_DELAY = 10;
             VAL_STATE = STATE_FAIL_SHUTDOWN_DELAY;
         }
@@ -126,7 +70,6 @@ void ups_step()
                 VAL_CYCLE_DELAY = 10;
                 VAL_STATE = STATE_CYCLE_DELAY;
                 VAL_MOSFET = 0;
-                handleRegMosfet();
             }
         }
         break;
@@ -157,5 +100,4 @@ void ups_step()
 
     VAL_RUN_COUNTER++;
 
-    // tws_delay(10); // delay 10ms
 }

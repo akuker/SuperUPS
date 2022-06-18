@@ -23,6 +23,7 @@ add_definitions(-DSTM8S103)
 add_executable(main
     src/main.c
     src/ups_state_machine.c
+    src/mosfet_handler.c
     src/i2c_register_data.c
     src/i2c_slave.c
     src/adc_utilities.c

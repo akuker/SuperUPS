@@ -21,28 +21,56 @@
 #include "uart_utilities.h"
 #include "ups_constants.h"
 #include "ups_state_machine.h"
+#include "mosfet_handler.h"
 
-/* Simple busy loop delay */
-void delay(unsigned long count)
-{
-    while (count--)
-        nop();
-}
+#define R1 100 // 10k
+#define R2 22  // 2.2k
 
 extern u8 i2c_counter;
-void handleRegMosfet();
+
+static const char STATE_DISABLED_STRING[] = "STATE_DISABLED";
+static const char STATE_WAIT_OFF_STRING[] = "STATE_WAIT_OFF";
+static const char STATE_WAIT_ON_STRING[] = "STATE_WAIT_ON";
+static const char STATE_POWERUP_STRING[] = "STATE_POWERUP";
+static const char STATE_RUNNING_STRING[] = "STATE_RUNNING";
+static const char STATE_FAIL_SHUTDOWN_STRING[] = "STATE_FAIL_SHUTDOWN";
+static const char STATE_FAIL_SHUTDOWN_DELAY_STRING[] = "STATE_FAIL_SHUTDOWN_DELAY";
+static const char STATE_CYCLE_DELAY_STRING[] = "STATE_CYCLE_DELAY";
+
+const char *states_strings[] = {
+    STATE_DISABLED_STRING,
+    STATE_WAIT_OFF_STRING,
+    STATE_WAIT_ON_STRING,
+    STATE_POWERUP_STRING,
+    STATE_RUNNING_STRING,
+    STATE_FAIL_SHUTDOWN_STRING,
+    STATE_FAIL_SHUTDOWN_DELAY_STRING,
+    STATE_CYCLE_DELAY_STRING,
+};
+
+static uint8_t counter = 0;
+
+void debug_output()
+{
+    printf("%s ", states_strings[i2c_register_values[STATE]]);
+    printf("VIN:%08X %d ", i2c_register_values[VIN_HIGH], i2c_register_values[VIN_HIGH]);
+    printf("VUPS:%08X %d ", i2c_register_values[VUPS_HIGH], i2c_register_values[VUPS_HIGH]);
+    printf("VOUT:%08X %d ", i2c_register_values[VOUT_HIGH], i2c_register_values[VOUT_HIGH]);
+    printf("Mosfet: %d ", i2c_register_values[MOSFET]);
+
+    uart_writec(counter + '0');
+    counter++;
+    if (counter > 9)
+        counter = 0;
+    printf(" run count:%d i2c reads: %d\n\r", counter, i2c_counter);
+}
 
 int main(void)
 {
     /* Set clock to full speed (16 Mhz) */
     CLK->CKDIVR = 0;
 
-    // TODO: This doesn't work when the i2c controller is enabled....
-    // GPIO_Init(GPIOB, GPIO_PIN_5, GPIO_MODE_OUT_PP_HIGH_SLOW);
-    // GPIO_Init(GPIOC, GPIO_PIN_3, GPIO_MODE_OUT_PP_HIGH_SLOW);
-
-    
-
+    mosfet_init();
     uart_init();
     i2c_init();
     ups_init();
@@ -50,29 +78,16 @@ int main(void)
 
     /* Enable general interrupts */
     enableInterrupts();
-    uint8_t counter = 0;
+    adc_step();
+    debug_output();
 
     while (1)
     {
         adc_step();
-        printf("VIN:%04X ", i2c_register_values[VIN_HIGH]);
-        printf("VUPS:%04X ", i2c_register_values[VUPS_HIGH]);
-        printf("VOUT:%04X ", i2c_register_values[VOUT_HIGH]);
-
-        uart_writec(counter + '0');
-        counter++;
-        if (counter > 9)
-            counter = 0;
-        uart_writec(' ');
-        uart_write_uint8(i2c_counter);
-        uart_write(" Hello World!\r\n");
-        // i2c_register_values[MOSFET] = 0;
-        // handleRegMosfet();
-        // delay(100000L);
-        i2c_register_values[MOSFET] = 1;
-        handleRegMosfet();
+        debug_output();
+        ups_step();
+        handle_mosfet();
+        debug_output();
         delay(100000L);
-        // delay(100000L);
-        // GPIO_WriteHigh(GPIOC, GPIO_PIN_3);
     }
 }

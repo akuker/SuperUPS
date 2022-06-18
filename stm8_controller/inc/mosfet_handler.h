@@ -5,18 +5,12 @@
 //	Copyright (C) 2020 Scott Baker
 //	Copyright (C) 2022 akuker
 //
-//	[ SuperUPS main ]
-//
-//  UART example based upon jukkas example:
-//     https://github.com/jukkas/stm8-sdcc-examples
+//	[ Mosfet Handler ]
 //
 //---------------------------------------------------------------------------
 
 #pragma once
 
-#include "i2c_register_data.h"
-
-extern uint16_t raw_adc_values[REGISTERS_SIZE];
-
-void adc_init(void);
-void adc_step(void);
+void delay(unsigned long count);
+void handle_mosfet();
+void mosfet_init();

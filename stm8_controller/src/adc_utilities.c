@@ -15,8 +15,10 @@
 
 #define MAX_ADC_SAMPLES 8
 
-#define R1 100
-#define R2 200
+// The ratio between R1 and R2 is what matters. These act as
+// a voltage divider
+#define R1 100 // 10k
+#define R2 22  // 2.2k
 
 #define VCONV(x) (x * R2 / (R1 + R2))
 #define VCONV_DIG(x) VCONV(x) * 256 / 2.56
@@ -28,26 +30,28 @@
 
 static uint8_t sample_ptr = 0;
 static uint8_t num_samples = 0;
-static uint8_t vin_samples[MAX_ADC_SAMPLES];
-static uint8_t vups_samples[MAX_ADC_SAMPLES];
-static uint8_t vout_samples[MAX_ADC_SAMPLES];
+static uint16_t vin_samples[MAX_ADC_SAMPLES];
+static uint16_t vups_samples[MAX_ADC_SAMPLES];
+static uint16_t vout_samples[MAX_ADC_SAMPLES];
 
-static uint8_t computeAverage(uint8_t *samples)
+static uint8_t computeAverage(uint16_t *samples)
 {
-    uint16_t accum = 0;
+    uint32_t accum = 0;
     uint8_t i;
     for (i = 0; i < num_samples; i++)
     {
-        accum = accum + samples[i];
+        accum = accum + (uint32_t)samples[i];
     }
-    return accum / num_samples;
+
+    uint32_t average = accum / num_samples;
+    return (uint8_t)((average >> 2) & 0xFF);
 }
 
 //---------------------------------------------------------------------------
 // Based upon:
 // https://circuitdigest.com/microcontroller-projects/adc-on-stm8s-using-c-compiler-reading-multiple-adc-values-and-displaying-on-lcd
 //---------------------------------------------------------------------------
-static uint8_t read_adc(ADC1_Channel_TypeDef ADC_Channel_Number)
+static uint16_t read_adc(ADC1_Channel_TypeDef ADC_Channel_Number)
 {
     ADC1_DeInit();
     ADC1_Init(ADC1_CONVERSIONMODE_CONTINUOUS,
@@ -66,9 +70,7 @@ static uint8_t read_adc(ADC1_Channel_TypeDef ADC_Channel_Number)
     ADC1_ClearFlag(ADC1_FLAG_EOC);
     ADC1_DeInit();
 
-    // The ADC will give us a 10 bit result. We want to
-    // shift out the lowest 2 bits to generate a uint8
-    return (uint8_t)((result >> 2) & 0xFF);
+    return result;
 }
 
 void adc_init()
