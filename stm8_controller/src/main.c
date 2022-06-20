@@ -46,8 +46,6 @@ const char *states_strings[] = {
     STATE_CYCLE_DELAY_STRING,
 };
 
-static uint8_t counter = 0;
-
 void debug_output()
 {
     printf("%s ", states_strings[i2c_register_values[I2C_CURENT_STATE]]);
@@ -58,12 +56,10 @@ void debug_output()
     printf("OFF: %02X ", i2c_register_values[I2C_12V_OFF_THRESH]);
     printf("ON: %02X ", i2c_register_values[I2C_12V_ON_THRESH]);
     printf("UPS THR: %02X ", i2c_register_values[I2C_UPS_POWERUP_THRESH]);
-
-    counter++;
-    if (counter > 9)
-        counter = 0;
-    printf(" run count:%d i2c reads: %d\n\r", counter, i2c_counter);
+    printf("i2c reads: %d\n\r", i2c_counter);
 }
+
+static uint16_t counter = 0;
 
 int main(void)
 {
@@ -87,7 +83,11 @@ int main(void)
         adc_step();
         ups_step();
         handle_mosfet();
-        debug_output();
-        delay_ms(1000L);
+        counter++;
+        if (counter > 999){
+            counter = 0;
+            debug_output();
+        }
+        delay_ms(1);
     }
 }
