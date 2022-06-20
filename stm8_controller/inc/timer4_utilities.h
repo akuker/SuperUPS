@@ -5,11 +5,14 @@
 //	Copyright (C) 2020 Scott Baker
 //	Copyright (C) 2022 akuker
 //
-//	[ Mosfet Handler ]
+//	[ Timer utilities ]
 //
 //---------------------------------------------------------------------------
 
 #pragma once
 
-void handle_mosfet();
-void mosfet_init();
+void timer_init();
+
+void delay_ms(unsigned long count);
+void delay_us(unsigned long count);
+

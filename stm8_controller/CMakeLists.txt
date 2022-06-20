@@ -1,5 +1,5 @@
 # Based upon the demo-spl project from:
-#   https://github.com/ulikoehler/stm8s-discovery-sdcc-blink
+# https://github.com/ulikoehler/stm8s-discovery-sdcc-blink
 
 cmake_minimum_required(VERSION 3.2)
 
@@ -19,6 +19,7 @@ set(SPL_SRC_PATH ${SPL_PATH}/src)
 set(LIB_CRC_SRC_PATH ${LIB_CRC_PATH}/src)
 include_directories(${SPL_PATH}/inc ${LIB_CRC_PATH}/include ${SPL_PATH}/conf AFTER)
 include_directories(./inc BEFORE)
+
 # Configure which STM8S we are using
 add_definitions(-DSTM8S103)
 
@@ -29,6 +30,7 @@ add_executable(main
     src/i2c_register_data.c
     src/i2c_slave.c
     src/adc_utilities.c
+    src/timer4_utilities.c
     src/uart_utilities.c
     ${LIB_CRC_SRC_PATH}/crc8.c
     ${SPL_SRC_PATH}/stm8s_adc1_ClearFlag.c
@@ -48,6 +50,12 @@ add_executable(main
     ${SPL_SRC_PATH}/stm8s_clk_GetClockFreq.c
     ${SPL_SRC_PATH}/stm8s_clk_private.c
     ${SPL_SRC_PATH}/stm8s_clk_PeripheralClockConfig.c
+    ${SPL_SRC_PATH}/stm8s_tim4_ITConfig.c
+    ${SPL_SRC_PATH}/stm8s_tim4_DeInit.c
+    ${SPL_SRC_PATH}/stm8s_tim4_Cmd.c
+    ${SPL_SRC_PATH}/stm8s_tim4_GetFlagStatus.c
+    ${SPL_SRC_PATH}/stm8s_tim4_TimeBaseInit.c
+    ${SPL_SRC_PATH}/stm8s_tim4_ClearFlag.c
     ${SPL_SRC_PATH}/stm8s_uart1_DeInit.c
     ${SPL_SRC_PATH}/stm8s_uart1_Init.c
     ${SPL_SRC_PATH}/stm8s_uart1_GetFlagStatus.c

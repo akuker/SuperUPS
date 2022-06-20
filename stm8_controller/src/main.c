@@ -22,6 +22,7 @@
 #include "ups_constants.h"
 #include "ups_state_machine.h"
 #include "mosfet_handler.h"
+#include "timer4_utilities.h"
 
 extern u8 i2c_counter;
 
@@ -84,10 +85,9 @@ int main(void)
     while (1)
     {
         adc_step();
-        debug_output();
         ups_step();
         handle_mosfet();
         debug_output();
-        delay(100000L);
+        delay_ms(1000L);
     }
 }

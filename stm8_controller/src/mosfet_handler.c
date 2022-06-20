@@ -13,13 +13,7 @@
 #include <stdint.h>
 #include <stm8s.h>
 #include "i2c_register_data.h"
-
-/* Simple busy loop delay */
-void delay(unsigned long count)
-{
-    while (count--)
-        nop();
-}
+#include "timer4_utilities.h"
 
 // Record the current state of the mosfet, so that we
 // only update the gpio when it changes.
@@ -68,16 +62,16 @@ void handle_mosfet()
             for (uint8_t i = 0; i < 200; i++)
             {
                 mosfetOn();
-                delay(10);
+                delay_us(10);
                 mosfetOff();
-                delay(10);
+                delay_us(10);
             }
             for (uint8_t i = 0; i < 200; i++)
             {
                 mosfetOn();
-                delay(20);
+                delay_us(20);
                 mosfetOff();
-                delay(10);
+                delay_us(10);
             }
             mosfetOn();
         }
