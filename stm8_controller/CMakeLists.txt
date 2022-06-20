@@ -14,8 +14,10 @@ set(CMAKE_EXE_LINKER_FLAGS_INIT "")
 project(STM8Blink C)
 SET(CMAKE_C_FLAGS "-mstm8 --std-c99")
 set(SPL_PATH external/spl/)
+set(LIB_CRC_PATH external/libcrc)
 set(SPL_SRC_PATH ${SPL_PATH}/src)
-include_directories(${SPL_PATH}/inc ${SPL_PATH}/conf AFTER)
+set(LIB_CRC_SRC_PATH ${LIB_CRC_PATH}/src)
+include_directories(${SPL_PATH}/inc ${LIB_CRC_PATH}/include ${SPL_PATH}/conf AFTER)
 include_directories(./inc BEFORE)
 # Configure which STM8S we are using
 add_definitions(-DSTM8S103)
@@ -28,12 +30,12 @@ add_executable(main
     src/i2c_slave.c
     src/adc_utilities.c
     src/uart_utilities.c
+    ${LIB_CRC_SRC_PATH}/crc8.c
     ${SPL_SRC_PATH}/stm8s_adc1_ClearFlag.c
     ${SPL_SRC_PATH}/stm8s_adc1_Cmd.c
     ${SPL_SRC_PATH}/stm8s_adc1_DeInit.c
     ${SPL_SRC_PATH}/stm8s_adc1_Init.c
     ${SPL_SRC_PATH}/stm8s_adc1_GetFlagStatus.c
-
     ${SPL_SRC_PATH}/stm8s_adc1_ExternalTriggerConfig.c
     ${SPL_SRC_PATH}/stm8s_adc1_StartConversion.c
     ${SPL_SRC_PATH}/stm8s_adc1_PrescalerConfig.c
@@ -50,7 +52,6 @@ add_executable(main
     ${SPL_SRC_PATH}/stm8s_uart1_Init.c
     ${SPL_SRC_PATH}/stm8s_uart1_GetFlagStatus.c
     ${SPL_SRC_PATH}/stm8s_uart1_SendData8.c
-   
 )
 
 # Flash targets

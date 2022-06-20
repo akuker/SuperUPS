@@ -14,15 +14,11 @@
 //---------------------------------------------------------------------------
 #include "i2c_slave.h"
 #include "i2c_register_data.h"
+#include <stdio.h>
 
 u8 *u8_MyBuffp;
 u8 MessageBegin;
 volatile u8 i2c_counter = 0;
-
-// void transaction_begin(void);
-// void transaction_end(void);
-// void byte_received(u8 u8_RxData);
-// u8 byte_write(void);
 
 static void I2C_transaction_begin(void)
 {
@@ -37,18 +33,19 @@ static void I2C_transaction_end(void)
 
 static void I2C_byte_received(u8 u8_RxData)
 {
-	if (MessageBegin == TRUE && u8_RxData < REGISTERS_SIZE)
+	printf("!");
+	if (MessageBegin == TRUE && u8_RxData < I2C_REGISTERS_SIZE)
 	{
 		u8_MyBuffp = &i2c_register_values[u8_RxData];
 		MessageBegin = FALSE;
 	}
-	else if (u8_MyBuffp <= &i2c_register_values[REGISTERS_SIZE - 1])
+	else if (u8_MyBuffp <= &i2c_register_values[I2C_REGISTERS_SIZE - 1])
 		*(u8_MyBuffp++) = u8_RxData;
 }
 
 static u8 I2C_byte_write(void)
 {
-	if (u8_MyBuffp <= &i2c_register_values[REGISTERS_SIZE - 1])
+	if (u8_MyBuffp <= &i2c_register_values[I2C_REGISTERS_SIZE - 1])
 		return *(u8_MyBuffp++);
 	else
 		return 0x00;

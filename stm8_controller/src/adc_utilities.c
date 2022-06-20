@@ -15,14 +15,6 @@
 
 #define MAX_ADC_SAMPLES 8
 
-// The ratio between R1 and R2 is what matters. These act as
-// a voltage divider
-#define R1 100 // 10k
-#define R2 22  // 2.2k
-
-#define VCONV(x) (x * R2 / (R1 + R2))
-#define VCONV_DIG(x) VCONV(x) * 256 / 2.56
-
 #define GET_ON_THRESH uint8_t(VCONV_DIG(ON_THRESH_DESIRED))
 #define GET_POWERUP_THRESH uint8_t(VCONV_DIG(POWERUP_THRESH_DESIRED))
 #define GET_OFF_THRESH uint8_t(VCONV_DIG(OFF_THRESH_DESIRED))
@@ -75,11 +67,9 @@ static uint16_t read_adc(ADC1_Channel_TypeDef ADC_Channel_Number)
 
 void adc_init()
 {
-    i2c_register_values[VIN_HIGH] = 0;
-    i2c_register_values[VUPS_HIGH] = 0;
-    i2c_register_values[VOUT_HIGH] = 0;
-    i2c_register_values[R1_VALUE] = R1;
-    i2c_register_values[R2_VALUE] = R2;
+    i2c_register_values[I2C_ADC_VOLTAGE_IN] = 0;
+    i2c_register_values[I2C_ADC_SUPER_CAP_VOLTAGE] = 0;
+    i2c_register_values[I2C_ADC_VOLTAGE_OUT] = 0;
     // Enable Peripheral Clock for ADC
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_ADC, ENABLE);
 }
@@ -96,7 +86,11 @@ void adc_step()
         num_samples = MAX_ADC_SAMPLES;
     }
 
-    i2c_register_values[VIN_HIGH] = computeAverage(vin_samples);
-    i2c_register_values[VUPS_HIGH] = computeAverage(vups_samples);
-    i2c_register_values[VOUT_HIGH] = computeAverage(vout_samples);
+    // Only update the global values if we're NOT in test mode
+    if (!i2c_register_values[I2C_TEST_MODE_ENABLE])
+    {
+        i2c_register_values[I2C_ADC_VOLTAGE_IN] = computeAverage(vin_samples);
+        i2c_register_values[I2C_ADC_SUPER_CAP_VOLTAGE] = computeAverage(vups_samples);
+        i2c_register_values[I2C_ADC_VOLTAGE_OUT] = computeAverage(vout_samples);
+    }
 }

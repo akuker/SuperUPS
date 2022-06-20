@@ -9,12 +9,16 @@
 //
 //---------------------------------------------------------------------------
 
-#include <string.h>
 #include <stdio.h>
-#include <stdint.h>
-#include <stm8s_uart1.h>
+#include "stm8s_uart1.h"
+#include "checksum.h"
+#include "i2c_register_data.h"
 #include "uart_utilities.h"
 
+static const char build_date[] = __DATE__; // the format is "Jan  1 2000"
+static const char build_time[] = __TIME__; // the format is "00:00:00"
+
+// This is referenced by the printf function
 int putchar(int c)
 {
     /* Write a character to the UART1 */
@@ -25,42 +29,20 @@ int putchar(int c)
     return (c);
 }
 
-int uart_write(const char *str)
+uint8_t calculate_build_date_crc()
 {
-    char i;
-    for (i = 0; i < strlen(str); i++)
+    uint8_t build_date_crc = 0x0;
+
+    for (int i = 0; i < sizeof(build_date); i++)
     {
-        while (!(UART1->SR & UART1_SR_TXE))
-            ; // !Transmit data register empty
-        UART1->DR = str[i];
+        build_date_crc = update_crc_8(build_date_crc, build_date[i]);
     }
-    return (i); // Bytes sent
-}
+    for (int i = 0; i < sizeof(build_time); i++)
+    {
+        build_date_crc = update_crc_8(build_date_crc, build_time[i]);
+    }
 
-int uart_writec(const char ch)
-{
-    while (!(UART1->SR & UART1_SR_TXE))
-        ; // !Transmit data register empty
-    UART1->DR = ch;
-    return 1; // Bytes sent
-}
-
-void uart_write_uint16(uint16_t val)
-{
-    (void)uart_writec(val / 10000 + '0');
-    (void)uart_writec((val % 10000) / 1000 + '0');
-    (void)uart_writec((val % 1000) / 100 + '0');
-    (void)uart_writec((val % 100) / 10 + '0');
-    (void)uart_writec(val % 10 + '0');
-    (void)uart_writec(' ');
-}
-
-void uart_write_uint8(uint8_t val)
-{
-    (void)uart_writec((val % 1000) / 100 + '0');
-    (void)uart_writec((val % 100) / 10 + '0');
-    (void)uart_writec(val % 10 + '0');
-    (void)uart_writec(' ');
+    return build_date_crc;
 }
 
 void uart_init()
@@ -69,8 +51,10 @@ void uart_init()
     UART1_Init(9600, UART1_WORDLENGTH_8D,
                UART1_STOPBITS_1, UART1_PARITY_NO,
                UART1_SYNCMODE_CLOCK_DISABLE, UART1_MODE_TXRX_ENABLE);
-    printf("\n\rUART1 Example :retarget the C library printf()/getchar() functions to the UART\n\r");
-    printf("\n\rEnter Text\n\r");
 
-    uart_write("---------------- Starting up.... \r\n");
+    uint8_t build_date_crc8 = calculate_build_date_crc();
+
+    printf("Build Date: %s %s CRC: %02X\n\r", build_date, build_time, build_date_crc8);
+
+    i2c_register_values[I2C_BUILD_VERSION] = build_date_crc8;
 }

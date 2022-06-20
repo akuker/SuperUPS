@@ -21,54 +21,65 @@ void delay(unsigned long count)
         nop();
 }
 
+// Record the current state of the mosfet, so that we
+// only update the gpio when it changes.
+static uint8_t current_mosfet_state = 0xFF;
+
 inline void mosfetOff()
 {
     GPIO_WriteHigh(GPIOC, GPIO_PIN_3);
+    current_mosfet_state = 0;
 }
 
 inline void mosfetOn()
 {
     GPIO_WriteLow(GPIOC, GPIO_PIN_3);
+    current_mosfet_state = 1;
 }
 
 void mosfet_init()
 {
-    i2c_register_values[MOSFET] = 0;
+    i2c_register_values[I2C_MOSFET_ENABLE] = 0;
     GPIO_Init(GPIOC, GPIO_PIN_3, GPIO_MODE_OUT_OD_LOW_FAST);
     mosfetOff();
 }
 
 void handle_mosfet()
 {
-    static uint8_t prev_state = 0xFF;
 
-    if (prev_state != i2c_register_values[MOSFET])
+    // If we're in test mode, we always want to enable power to the host
+    if (i2c_register_values[I2C_TEST_MODE_ENABLE])
     {
-        if (i2c_register_values[MOSFET])
+        mosfetOn();
+        return;
+    }
+
+    // check if the state has changed, then update the mosfet state
+    if (current_mosfet_state != i2c_register_values[I2C_MOSFET_ENABLE])
+    {
+        if (i2c_register_values[I2C_MOSFET_ENABLE])
         {
             // low will turn the mosfet on
             mosfetOn();
 
-            // TOOD: Not sure if this is needed for the 12v version...
-            // // Slow-start the mosfet.
-            // // Otherwise, the sudden current inrush will cause the dc/dc
-            // // converter to trip into overcurrent mode and shut off.
-            // uint8_t i;
-            // for (i = 0; i < 200; i++)
-            // {
-            //     mosfetOn();
-            //     delay(10);
-            //     mosfetOff();
-            //     delay(10);
-            // }
-            // for (i = 0; i < 200; i++)
-            // {
-            //     mosfetOn();
-            //     delay(20);
-            //     mosfetOff();
-            //     delay(10);
-            // }
-            // mosfetOn();
+            // Slow-start the mosfet.
+            // Otherwise, the sudden current inrush will cause the dc/dc
+            // converter to trip into overcurrent mode and shut off.
+            for (uint8_t i = 0; i < 200; i++)
+            {
+                mosfetOn();
+                delay(10);
+                mosfetOff();
+                delay(10);
+            }
+            for (uint8_t i = 0; i < 200; i++)
+            {
+                mosfetOn();
+                delay(20);
+                mosfetOff();
+                delay(10);
+            }
+            mosfetOn();
         }
         else
         {

@@ -24,9 +24,9 @@ typedef enum
     STATE_WAIT_ON = (uint8_t)2,
     STATE_POWERUP = (uint8_t)3,
     STATE_RUNNING = (uint8_t)4,
-    STATE_FAIL_SHUTDOWN = (uint8_t)5,
-    STATE_FAIL_SHUTDOWN_DELAY = (uint8_t)6,
-    STATE_CYCLE_DELAY = (uint8_t)7,
+    STATE_POWER_LOSS_SHUTDOWN = (uint8_t)5,
+    STATE_POWER_LOSS_SHUTDOWN_DELAY = (uint8_t)6,
+    STATE_COMMANDED_POWER_CYCLE_DELAY = (uint8_t)7,
 } ups_state_type;
 
 #define VAL_MOSFET i2c_register_values[MOSFET]

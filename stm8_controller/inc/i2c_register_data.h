@@ -17,23 +17,27 @@
 
 typedef enum
 {
-    // VIN_LOW = (uint8_t)2,
-    VIN_HIGH = (uint8_t)3,
-    VOUT_HIGH = (uint8_t)4,
-    VUPS_HIGH = (uint8_t)5,
-    MOSFET = (uint8_t)6,
-    ON_THRESH = (uint8_t)7,
-    OFF_THRESH = (uint8_t)8,
-    COUNTDOWN = (uint8_t)9,
-    STATE = (uint8_t)10,
-    CYCLE_DELAY = (uint8_t)11,
-    FAIL_SHUTDOWN_DELAY = (uint8_t)12,
-    RUN_COUNTER = (uint8_t)13,
-    POWERUP_THRESH = (uint8_t)14,
-    SHUTDOWN_THRESH = (uint8_t)15,
-    R1_VALUE = (uint8_t)16,
-    R2_VALUE = (uint8_t)17,
-    REGISTERS_SIZE = (uint8_t)18, // Must be the last entry
+    I2C_TEST_MODE_ENABLE = (uint8_t)2,
+    I2C_ADC_VOLTAGE_IN = (uint8_t)3,
+    I2C_ADC_VOLTAGE_OUT = (uint8_t)4,
+    I2C_ADC_SUPER_CAP_VOLTAGE = (uint8_t)5,
+    I2C_MOSFET_ENABLE = (uint8_t)6,
+    I2C_12V_ON_THRESH = (uint8_t)7,
+    I2C_12V_OFF_THRESH = (uint8_t)8,
+    I2C_COUNTDOWN = (uint8_t)9,
+    I2C_CURENT_STATE = (uint8_t)10,
+    I2C_CYCLE_DELAY = (uint8_t)11,
+    I2C_FAIL_SHUTDOWN_DELAY = (uint8_t)12,
+    I2C_RUN_COUNTER = (uint8_t)13,
+    I2C_UPS_POWERUP_THRESH = (uint8_t)14,
+    I2C_SHUTDOWN_THRESH = (uint8_t)15,
+    I2C_VOLTAGE_DIVIDER_R1_VALUE = (uint8_t)16,
+    I2C_VOLTAGE_DIVIDER_R2_VALUE = (uint8_t)17,
+    I2C_INTERFACE_VERSION = (uint8_t)18,
+    I2C_BUILD_VERSION = (uint8_t)19,
+    I2C_REGISTERS_SIZE = (uint8_t)20 // Must be the last entry
 } i2c_register_index;
 
-extern volatile uint8_t i2c_register_values[REGISTERS_SIZE];
+extern volatile uint8_t i2c_register_values[I2C_REGISTERS_SIZE];
+
+void init_register_data();

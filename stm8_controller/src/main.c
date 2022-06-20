@@ -23,9 +23,6 @@
 #include "ups_state_machine.h"
 #include "mosfet_handler.h"
 
-#define R1 100 // 10k
-#define R2 22  // 2.2k
-
 extern u8 i2c_counter;
 
 static const char STATE_DISABLED_STRING[] = "STATE_DISABLED";
@@ -33,9 +30,9 @@ static const char STATE_WAIT_OFF_STRING[] = "STATE_WAIT_OFF";
 static const char STATE_WAIT_ON_STRING[] = "STATE_WAIT_ON";
 static const char STATE_POWERUP_STRING[] = "STATE_POWERUP";
 static const char STATE_RUNNING_STRING[] = "STATE_RUNNING";
-static const char STATE_FAIL_SHUTDOWN_STRING[] = "STATE_FAIL_SHUTDOWN";
-static const char STATE_FAIL_SHUTDOWN_DELAY_STRING[] = "STATE_FAIL_SHUTDOWN_DELAY";
-static const char STATE_CYCLE_DELAY_STRING[] = "STATE_CYCLE_DELAY";
+static const char STATE_FAIL_SHUTDOWN_STRING[] = "STATE_POWER_LOSS_SHUTDOWN";
+static const char STATE_FAIL_SHUTDOWN_DELAY_STRING[] = "STATE_POWER_LOSS_SHUTDOWN_DELAY";
+static const char STATE_CYCLE_DELAY_STRING[] = "STATE_COMMANDED_POWER_CYCLE_DELAY";
 
 const char *states_strings[] = {
     STATE_DISABLED_STRING,
@@ -52,13 +49,15 @@ static uint8_t counter = 0;
 
 void debug_output()
 {
-    printf("%s ", states_strings[i2c_register_values[STATE]]);
-    printf("VIN:%08X %d ", i2c_register_values[VIN_HIGH], i2c_register_values[VIN_HIGH]);
-    printf("VUPS:%08X %d ", i2c_register_values[VUPS_HIGH], i2c_register_values[VUPS_HIGH]);
-    printf("VOUT:%08X %d ", i2c_register_values[VOUT_HIGH], i2c_register_values[VOUT_HIGH]);
-    printf("Mosfet: %d ", i2c_register_values[MOSFET]);
+    printf("%s ", states_strings[i2c_register_values[I2C_CURENT_STATE]]);
+    printf("VIN:%02X %d ", i2c_register_values[I2C_ADC_VOLTAGE_IN], i2c_register_values[I2C_ADC_VOLTAGE_IN]);
+    printf("VUPS:%02X %d ", i2c_register_values[I2C_ADC_SUPER_CAP_VOLTAGE], i2c_register_values[I2C_ADC_SUPER_CAP_VOLTAGE]);
+    printf("VOUT:%02X %d ", i2c_register_values[I2C_ADC_VOLTAGE_OUT], i2c_register_values[I2C_ADC_VOLTAGE_OUT]);
+    printf("Mosfet: %d ", i2c_register_values[I2C_MOSFET_ENABLE]);
+    printf("OFF: %02X ", i2c_register_values[I2C_12V_OFF_THRESH]);
+    printf("ON: %02X ", i2c_register_values[I2C_12V_ON_THRESH]);
+    printf("UPS THR: %02X ", i2c_register_values[I2C_UPS_POWERUP_THRESH]);
 
-    uart_writec(counter + '0');
     counter++;
     if (counter > 9)
         counter = 0;
@@ -70,6 +69,7 @@ int main(void)
     /* Set clock to full speed (16 Mhz) */
     CLK->CKDIVR = 0;
 
+    init_register_data();
     mosfet_init();
     uart_init();
     i2c_init();
