@@ -19,16 +19,20 @@ class SuperUPS:
     class States(int):
         STATE_DISABLED = 0
         """Invalid state - not used by the controller."""
-
         STATE_WAIT_OFF = 1
         """During a commanded power cycle, delay in the 'off' state"""
-
         STATE_WAIT_ON = 2
+        """Turn the power back on after a power cycle"""
         STATE_POWERUP = 3
+        """Waiting for the super caps to charge after input power is restored"""
         STATE_RUNNING = 4
+        """Normal running state of the super UPS"""
         STATE_POWER_LOSS_SHUTDOWN = 5
+        """Wait for input power to be restored"""
         STATE_POWER_LOSS_SHUTDOWN_DELAY = 6
+        """Input power is lost and the super caps have been discharged."""
         STATE_COMMANDED_POWER_CYCLE_DELAY = 7
+        """Pi has commanded a power cycle. Remove power and delay"""
 
     I2C_TEST_MODE_ENABLE = 2
     I2C_ADC_VOLTAGE_IN = 3
@@ -57,6 +61,9 @@ class SuperUPS:
         if(self.interface_version != self.EXPECTED_INTERFACE_VERSION):
             print("WARNING: Unexpected interface version. SuperUPS may not work properly")
         self.cached_test_mode = False
+
+    def __del__(self):
+        self.bus.close()
 
     @property
     def input_voltage(self):
@@ -135,12 +142,22 @@ class SuperUPS:
             self.i2c_address, self.I2C_CURENT_STATE, new_value)
 
     @property
-    def ups_powerup_threshold(self):
+    def ups_powerup_voltage_threshold(self):
         return self.bus.read_byte_data(self.i2c_address, self.I2C_UPS_POWERUP_THRESH)
+
+    @ups_powerup_voltage_threshold.setter
+    def ups_powerup_voltage_threshold(self, new_value):
+        self.bus.write_byte_data(
+            self.i2c_address, self.I2C_UPS_POWERUP_THRESH, new_value)
 
     @property
     def shutdown_voltage_threshold(self):
         return self.bus.read_byte_data(self.i2c_address, self.I2C_SHUTDOWN_THRESH)
+
+    @shutdown_voltage_threshold.setter
+    def shutdown_voltage_threshold(self, new_value):
+        self.bus.write_byte_data(
+            self.i2c_address, self.I2C_SHUTDOWN_THRESH, new_value)
 
     @property
     def r1_value(self):
@@ -168,7 +185,7 @@ class SuperUPS:
         return self.bus.read_byte_data(self.i2c_address, self.I2C_INTERFACE_VERSION)
 
     @property
-    def build_version(self):
+    def build_id(self):
         return self.bus.read_byte_data(self.i2c_address, self.I2C_BUILD_VERSION)
 
     @property
