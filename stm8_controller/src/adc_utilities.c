@@ -87,7 +87,7 @@ void adc_step()
     }
 
     // Only update the global values if we're NOT in test mode
-    if (i2c_register_values[I2C_TEST_MODE_ENABLE] != 0)
+    if (i2c_register_values[I2C_TEST_MODE_ENABLE] == 0)
     {
         i2c_register_values[I2C_ADC_VOLTAGE_IN] = computeAverage(vin_samples);
         i2c_register_values[I2C_ADC_SUPER_CAP_VOLTAGE] = computeAverage(vups_samples);

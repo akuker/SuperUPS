@@ -50,9 +50,12 @@ const char *states_strings[] = {
 void debug_output()
 {
     printf("%s ", states_strings[i2c_register_values[I2C_CURENT_STATE]]);
+    printf("TEST: %02X ", i2c_register_values[I2C_TEST_MODE_ENABLE] );
     printf("VIN:%02X %d ", i2c_register_values[I2C_ADC_VOLTAGE_IN], i2c_register_values[I2C_ADC_VOLTAGE_IN]);
     printf("VUPS:%02X %d ", i2c_register_values[I2C_ADC_SUPER_CAP_VOLTAGE], i2c_register_values[I2C_ADC_SUPER_CAP_VOLTAGE]);
     printf("VOUT:%02X %d ", i2c_register_values[I2C_ADC_VOLTAGE_OUT], i2c_register_values[I2C_ADC_VOLTAGE_OUT]);
+    printf("Shutdown %02X ", i2c_register_values[I2C_POWER_BUTTON_STATE]);
+    printf("Aux Btn %02X ", i2c_register_values[I2C_AUX_BUTTON_STATE]);
     printf("Mosfet: %d ", i2c_register_values[I2C_MOSFET_ENABLE]);
     printf("OFF: %02X ", i2c_register_values[I2C_12V_OFF_THRESH]);
     printf("ON: %02X ", i2c_register_values[I2C_12V_ON_THRESH]);
