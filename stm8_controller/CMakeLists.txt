@@ -32,6 +32,7 @@ add_executable(main
     src/adc_utilities.c
     src/timer4_utilities.c
     src/uart_utilities.c
+    src/gpio_handler.c
     ${LIB_CRC_SRC_PATH}/crc8.c
     ${SPL_SRC_PATH}/stm8s_adc1_ClearFlag.c
     ${SPL_SRC_PATH}/stm8s_adc1_Cmd.c
@@ -47,6 +48,7 @@ add_executable(main
     ${SPL_SRC_PATH}/stm8s_gpio_Init.c
     ${SPL_SRC_PATH}/stm8s_gpio_WriteLow.c
     ${SPL_SRC_PATH}/stm8s_gpio_WriteHigh.c
+    ${SPL_SRC_PATH}/stm8s_gpio_ReadInputPin.c
     ${SPL_SRC_PATH}/stm8s_clk_GetClockFreq.c
     ${SPL_SRC_PATH}/stm8s_clk_private.c
     ${SPL_SRC_PATH}/stm8s_clk_PeripheralClockConfig.c

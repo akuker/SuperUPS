@@ -17,6 +17,7 @@
 
 static const char build_date[] = __DATE__; // the format is "Jan  1 2000"
 static const char build_time[] = __TIME__; // the format is "00:00:00"
+static const char device_id_string[] = "SuperUPS controller";
 
 // This is referenced by the printf function
 int putchar(int c)
@@ -45,6 +46,20 @@ uint8_t calculate_build_date_crc()
     return build_date_crc;
 }
 
+// For the device ID, we just want some value to tell that we're actually talking
+// to this device. So, we'll use the crc8 of the device name.
+uint8_t calculate_device_id()
+{
+    uint8_t device_id_crc = 0x0;
+
+    for (int i = 0; i < sizeof(device_id_string); i++)
+    {
+        device_id_crc = update_crc_8(device_id_crc, device_id_string[i]);
+    }
+
+    return device_id_crc;
+}
+
 void uart_init()
 {
     UART1_DeInit();
@@ -53,8 +68,10 @@ void uart_init()
                UART1_SYNCMODE_CLOCK_DISABLE, UART1_MODE_TXRX_ENABLE);
 
     uint8_t build_date_crc8 = calculate_build_date_crc();
+    uint8_t device_id_crc8 = calculate_device_id();
 
-    printf("Build Date: %s %s CRC: %02X\n\r", build_date, build_time, build_date_crc8);
+    printf("Build Date: %s %s CRC: %02X Device: %02X\n\r", build_date, build_time, build_date_crc8, device_id_crc8);
 
     i2c_register_values[I2C_BUILD_VERSION] = build_date_crc8;
+    i2c_register_values[I2C_DEVICE_ID] = device_id_crc8;
 }

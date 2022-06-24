@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "adc_utilities.h"
+#include "gpio_handler.h"
 #include "i2c_slave.h"
 #include "i2c_register_data.h"
 #include "uart_utilities.h"
@@ -72,6 +73,7 @@ int main(void)
     i2c_init();
     ups_init();
     adc_init();
+    gpios_init();
 
     /* Enable general interrupts */
     enableInterrupts();
@@ -83,6 +85,7 @@ int main(void)
         adc_step();
         ups_step();
         handle_mosfet();
+        gpios_step();
         counter++;
         if (counter > 999){
             counter = 0;
