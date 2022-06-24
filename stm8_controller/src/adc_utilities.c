@@ -56,7 +56,7 @@ static uint16_t read_adc(ADC1_Channel_TypeDef ADC_Channel_Number)
               DISABLE);
     ADC1_Cmd(ENABLE);
     ADC1_StartConversion();
-    while (ADC1_GetFlagStatus(ADC1_FLAG_EOC) == FALSE)
+    while (ADC1_GetFlagStatus(ADC1_FLAG_EOC) == RESET)
         ;
     uint16_t result = ADC1_GetConversionValue();
     ADC1_ClearFlag(ADC1_FLAG_EOC);
@@ -87,7 +87,7 @@ void adc_step()
     }
 
     // Only update the global values if we're NOT in test mode
-    if (!i2c_register_values[I2C_TEST_MODE_ENABLE])
+    if (i2c_register_values[I2C_TEST_MODE_ENABLE] != 0)
     {
         i2c_register_values[I2C_ADC_VOLTAGE_IN] = computeAverage(vin_samples);
         i2c_register_values[I2C_ADC_SUPER_CAP_VOLTAGE] = computeAverage(vups_samples);

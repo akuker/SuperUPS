@@ -42,7 +42,7 @@ void handle_mosfet()
 {
 
     // If we're in test mode, we always want to enable power to the host
-    if (i2c_register_values[I2C_TEST_MODE_ENABLE])
+    if (i2c_register_values[I2C_TEST_MODE_ENABLE] != 0)
     {
         mosfetOn();
         return;
@@ -51,7 +51,7 @@ void handle_mosfet()
     // check if the state has changed, then update the mosfet state
     if (current_mosfet_state != i2c_register_values[I2C_MOSFET_ENABLE])
     {
-        if (i2c_register_values[I2C_MOSFET_ENABLE])
+        if (i2c_register_values[I2C_MOSFET_ENABLE] != 0)
         {
             // low will turn the mosfet on
             mosfetOn();

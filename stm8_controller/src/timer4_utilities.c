@@ -9,6 +9,7 @@
 //
 //---------------------------------------------------------------------------
 
+#include <stdint.h>
 #include "timer4_utilities.h"
 #include "stm8s_tim4.h"
 
