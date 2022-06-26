@@ -1,0 +1,6 @@
+[submodule "stm8_controller/external/spl"]
+	path = stm8_controller/external/spl
+	url = https://github.com/ulikoehler/STM8S-SDCC-SPL
+[submodule "stm8_controller/external/libcrc"]
+	path = stm8_controller/external/libcrc
+	url = https://github.com/lammertb/libcrc
