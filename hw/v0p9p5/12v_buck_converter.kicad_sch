@@ -599,6 +599,11 @@
     (uuid eecd9c71-0368-41a9-ace3-bd018cdcaf71)
   )
 
+  (polyline (pts (xy 279.4 125.73) (xy 279.4 106.68))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 012aa115-78f4-4360-89f6-ee7ebc873f86)
+  )
+
   (wire (pts (xy 121.92 115.57) (xy 121.92 121.92))
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid 0150a597-9ca4-4081-88d2-6ff7d09ea1a2)
@@ -651,6 +656,11 @@
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid 2e723b17-b264-49e0-99dc-3ace6ec6c590)
   )
+  (polyline (pts (xy 166.37 106.68) (xy 279.4 106.68))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 2f1749e1-abed-43a9-8bd4-d14296cc65d4)
+  )
+
   (wire (pts (xy 134.62 135.89) (xy 144.78 135.89))
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid 2f4d6b2b-8ccf-4f14-8b63-a283c9158275)
@@ -731,6 +741,11 @@
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid 8afd9c35-4e4d-476d-9e26-4a9f78600246)
   )
+  (polyline (pts (xy 166.37 125.73) (xy 279.4 125.73))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 8e6ba82b-bc7d-4cae-b700-ce75cae93d7f)
+  )
+
   (wire (pts (xy 156.21 154.94) (xy 156.21 157.48))
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid 9057652c-a9b6-4ac8-921e-baf9836c12d0)
@@ -759,6 +774,11 @@
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid a1aad2b7-d537-4ebe-9600-9849a0eda02a)
   )
+  (polyline (pts (xy 219.71 123.19) (xy 219.71 146.05))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid a21c65c1-d56b-4c1d-b7df-d61c7ccdbd93)
+  )
+
   (wire (pts (xy 116.84 132.08) (xy 116.84 115.57))
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid a4a8cafe-8ceb-47fb-895b-66d60129db29)
@@ -823,6 +843,11 @@
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid ce9231c3-ef0f-4298-8666-3e023bba7902)
   )
+  (polyline (pts (xy 162.56 146.05) (xy 219.71 146.05))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid d10c98d6-1b12-4dd4-9d1f-e18e8bcce695)
+  )
+
   (wire (pts (xy 134.62 153.67) (xy 134.62 149.86))
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid da90ff7d-1c83-49a0-ab85-12713556e74c)
@@ -851,11 +876,21 @@
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid f722ea3c-0557-407a-b5bf-641f8a291a63)
   )
+  (polyline (pts (xy 166.37 106.68) (xy 166.37 125.73))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid fc04496a-53ef-4353-ae9c-09eca4e4a637)
+  )
+
   (wire (pts (xy 73.66 135.89) (xy 85.09 135.89))
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid fff14835-a6f2-47f8-9733-ef3f4514ad5e)
   )
 
+  (text "R26 SHOULD BE 1.8K\n\n2K will result in \"undervoltage\" on Raspberry Pi"
+    (at 166.37 123.19 0)
+    (effects (font (size 3 3)) (justify left bottom))
+    (uuid 3c23f531-4e85-46dc-b45d-82bb9a17b821)
+  )
   (text "Data sheet: 9.2.2.3 Output Voltage Set Point\n------------------------\nVref = 0.8V (per data sheet)\nR105 should be around 10k\n\nR105 = 10k\nR106 = 2k\n\nR106 = (R105 * Vref) / (Vout - Vref)\nR106 = (10.5k * 0.8) / (5v - 0.8v)\nR106 = 1.904k\n"
     (at 165.1 153.67 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
