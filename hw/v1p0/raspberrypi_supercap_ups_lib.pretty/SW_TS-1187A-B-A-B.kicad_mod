@@ -44,4 +44,9 @@
   (pad "1" smd rect (at -3 -1.875) (size 1 0.75) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 9aafc6cc-3985-4319-8773-4694eca01961))
   (pad "2" smd rect (at -3 1.875) (size 1 0.75) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 4478a472-b9d7-4c55-a64b-41c0233e7198))
   (pad "2" smd rect (at 3 1.875) (size 1 0.75) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp c9ee2d0a-a5dd-4133-ba93-b8eac80770bf))
+  (model "${KIPRJMOD}/raspberrypi_supercap_ups_lib.pretty/TS-1187A-B-A-B.step"
+    (offset (xyz 0 0 0))
+    (scale (xyz 1 1 1))
+    (rotate (xyz -90 0 0))
+  )
 )

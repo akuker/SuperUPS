@@ -492,8 +492,6 @@
           "Net-(C2-Pad2)",
           "Net-(C3-Pad2)",
           "Net-(C4-Pad2)",
-          "Net-(C7-Pad1)",
-          "Net-(D2-Pad1)",
           "Net-(J1-Pad2)",
           "VIN"
         ],
@@ -536,9 +534,7 @@
         "name": "5vPower",
         "nets": [
           "+5V",
-          "Net-(C18-Pad1)",
-          "Net-(D10-Pad2)",
-          "POW_OUT"
+          "Net-(C18-Pad1)"
         ],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
