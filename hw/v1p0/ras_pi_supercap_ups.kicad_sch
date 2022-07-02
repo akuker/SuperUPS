@@ -5379,7 +5379,7 @@
       (reference "R15") (unit 1) (value "1k") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
     (path "/8f754e91-02e2-4214-a3e4-a044379db8a6/885fbf61-657b-4ef3-934c-0be365ee378a"
-      (reference "R16") (unit 1) (value "1k") (footprint "Resistor_SMD:R_0805_2012Metric")
+      (reference "R16") (unit 1) (value "0") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
     (path "/cc118b2d-f9a2-41b6-b727-dd2b180704b2"
       (reference "R18") (unit 1) (value "1k") (footprint "Resistor_SMD:R_0805_2012Metric")
