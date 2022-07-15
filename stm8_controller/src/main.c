@@ -22,7 +22,7 @@
 #include "uart_utilities.h"
 #include "ups_constants.h"
 #include "ups_state_machine.h"
-#include "mosfet_handler.h"
+#include "power_control.h"
 #include "timer4_utilities.h"
 
 extern u8 i2c_counter;
@@ -71,7 +71,7 @@ int main(void)
     CLK->CKDIVR = 0;
 
     init_register_data();
-    mosfet_init();
+    power_control_init();
     uart_init();
     i2c_init();
     ups_init();
@@ -87,7 +87,7 @@ int main(void)
     {
         adc_step();
         ups_step();
-        handle_mosfet();
+        pwr_ctrl_step();
         gpios_step();
         counter++;
         if (counter > 999){
