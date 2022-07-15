@@ -12,7 +12,7 @@ set(CMAKE_C_FLAGS_INIT "")
 set(CMAKE_EXE_LINKER_FLAGS_INIT "")
 
 project(STM8Blink C)
-SET(CMAKE_C_FLAGS "-mstm8 --std-c99")
+SET(CMAKE_C_FLAGS "-mstm8 --std-c99 -DSTM8_UART_STDIO -DSTM8_I2C_STDIO")
 set(SPL_PATH external/spl/)
 set(RING_BUF_PATH external/ringbuffer)
 set(LIB_CRC_PATH external/libcrc)

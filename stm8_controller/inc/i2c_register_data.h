@@ -17,6 +17,7 @@
 
 typedef enum
 {
+    I2C_CHARACTER_BUFFER = (uint8_t)1,
     I2C_TEST_MODE_ENABLE = (uint8_t)2,
     I2C_ADC_VOLTAGE_IN = (uint8_t)3,
     I2C_ADC_VOLTAGE_OUT = (uint8_t)4,
