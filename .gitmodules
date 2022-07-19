@@ -1,0 +1,11 @@
+[submodule "stm8_controller/external/spl"]
+	path = stm8_controller/external/spl
+	url = https://github.com/ulikoehler/STM8S-SDCC-SPL
+[submodule "stm8_controller/external/libcrc"]
+	path = stm8_controller/external/libcrc
+	url = https://github.com/lammertb/libcrc
+[submodule "stm8_controller/external/ringbuffer"]
+	path = stm8_controller/external/ringbuffer
+	url = https://github.com/phryniszak/Ring-Buffer
+[submodule "./stm8_controller/external/ringbuffer/"]
+	url = https://github.com/akuker/Ring-Buffer
