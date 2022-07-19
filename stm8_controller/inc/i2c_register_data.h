@@ -39,7 +39,8 @@ typedef enum
     I2C_DEVICE_ID = (uint8_t)20,
     I2C_POWER_BUTTON_STATE = (uint8_t)21,
     I2C_AUX_BUTTON_STATE = (uint8_t)22,
-    I2C_REGISTERS_SIZE = (uint8_t)23 // Must be the last entry
+    I2C_DEBUG_LED_STATE = (uint8_t)23,
+    I2C_REGISTERS_SIZE = (uint8_t)24 // Must be the last entry
 } i2c_register_index;
 
 extern volatile uint8_t i2c_register_values[I2C_REGISTERS_SIZE];
