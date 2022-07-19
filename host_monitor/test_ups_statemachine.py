@@ -12,7 +12,7 @@
 
 import unittest
 import ups
-
+import datetime
 
 class TestUpsSettersAndGetters(unittest.TestCase):
 
@@ -40,11 +40,26 @@ class TestUpsSettersAndGetters(unittest.TestCase):
         cls.ups.test_mode = False
         del cls.ups
 
-    def test_state_out_of_test_mode(self):
+    def wait_for_equal_timeout(a, b, timeout_seconds):
         """
-        State variable can NOT be overwritten when out of test mode
+        Wait for a to equal b, but not more than <timeout> seconds
         """
-        self.ups.test_mode = False
+        start = datetime.datetime.now()
+        while(a != b):
+            time_delta = datetime.datetime.now - start
+            if time_delta.total_seconds() > timeout_seconds:
+                break
+
+    def test_commanded_power_cycle(self):
+        """
+        When a power cycle is commanded, the mosfet should be disabled
+        for a few seconds, then re-enabled
+        """
+        self.ups.test_mode = True
+        self.assertEqual(self.ups.current_state, ups.SuperUPS.States.STATE_RUNNING)
+        print("Setting to true")
+        # Shutdown counter is specified in 10s of mm
+        self.ups.command_shutdown_counter = 100
         with self.assertRaises(AssertionError):
             self.ups.current_state = ups.SuperUPS.States.STATE_DISABLED
 

@@ -6,6 +6,9 @@ After=multi-user.target
 Type=idle
 #ExecStart=/usr/bin/python -u /usr/bin/upscontrol -d -O /var/log/ups.log monitor
 ExecStart=/usr/bin/python -u /usr/bin/upscontrol -d monitor
+ExecStop=/usr/local/bin/rasctl -X
+SyslogIdentifier=RASCSI
+
 
 [Install]
 WantedBy=multi-user.target
