@@ -35,6 +35,7 @@ class SuperUPS:
         STATE_COMMANDED_POWER_CYCLE_DELAY = 7
         """Pi has commanded a power cycle. Remove power and delay"""
 
+    I2C_CHARACTER_BUFFER = 1
     I2C_TEST_MODE_ENABLE = 2
     I2C_ADC_VOLTAGE_IN = 3
     I2C_ADC_VOLTAGE_OUT = 4
@@ -66,9 +67,38 @@ class SuperUPS:
         if(self.interface_version != self.EXPECTED_INTERFACE_VERSION):
             print("WARNING: Unexpected interface version. SuperUPS may not work properly")
         self.cached_test_mode = False
+        self.string_cache = ""
 
     def __del__(self):
         self.bus.close()
+
+    #region debug text handling
+
+    def _read_character(self):
+        return self.bus.read_byte_data(self.i2c_address, self.I2C_CHARACTER_BUFFER)
+
+    def read_string(self):
+        logger = logging.getLogger('upsdaemon')
+        while True:
+            next_character = self._read_character()
+            if(next_character == 0xFF):
+                break
+            else:
+                if(chr(next_character) == '\n'):
+                    return_string = self.string_cache
+                    self.string_cache = ""
+                    return return_string
+                elif(chr(next_character) == '\r'):
+                    pass
+                elif(chr(next_character) == '\0'):
+                    pass
+                else:
+                    logger.debug("Read char: {} (0x{})".format(chr(next_character), hex(next_character)))
+                    self.string_cache = self.string_cache + chr(next_character)
+
+        return None
+
+    #endregion
 
     #region Voltages
 

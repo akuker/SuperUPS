@@ -49,38 +49,51 @@ def monitor():
     global this_ups, SHUTDOWN_COMMAND, logger
 
     debug_led_state = False
+    # Counter to only check the voltage every second.
+    count = 0
 
     signal.signal(signal.SIGHUP, signal_hup)
     signal.signal(signal.SIGUSR1, signal_usr1)
     logger.info("Starting monitor...")
     while True:
         try:
-            v_in = this_ups.input_voltage
-            v_threshold = this_ups.input_power_off_threshold
-            logger.info("VIN: %0.2f V_Threshold: %0.2f" % (v_in, v_threshold))
+            count = count + 1
+            if(count > 10):
+                v_in = this_ups.input_voltage
+                v_threshold = this_ups.input_power_off_threshold
+                logger.info("VIN: %0.2f V_Threshold: %0.2f" % (v_in, v_threshold))
 
-            if (v_in < v_threshold):
-                logger.warning("VIN of %0.2f is less than threshold of %0.2f" % (v_in, v_threshold))
-                logger.warning("Executing shutdown command %s" % SHUTDOWN_COMMAND)
-                #os.system(SHUTDOWN_COMMAND)
+                if (v_in < v_threshold):
+                    logger.warning("VIN of %0.2f is less than threshold of %0.2f" % (v_in, v_threshold))
+                    logger.warning("Executing shutdown command %s" % SHUTDOWN_COMMAND)
+                    #os.system(SHUTDOWN_COMMAND)
 
-            if glo_Usr1Received:
-                glo_Usr1Received = False
-                this_ups.dump_status()
-                
-            if glo_HupReceived:
-                glo_HupReceived = False
-                logger.warning("HUP Received!")
-                logger.warning("Executing shutdown command %s" % SHUTDOWN_COMMAND)
-                #os.system(SHUTDOWN_COMMAND)
+                if glo_Usr1Received:
+                    glo_Usr1Received = False
+                    this_ups.dump_status()
+                    
+                if glo_HupReceived:
+                    glo_HupReceived = False
+                    logger.warning("HUP Received!")
+                    logger.warning("Executing shutdown command %s" % SHUTDOWN_COMMAND)
+                    #os.system(SHUTDOWN_COMMAND)
 
-            logger.debug("Setting LED to {}".format(debug_led_state))
-            this_ups.debug_led_state = int(debug_led_state)
-            debug_led_state = not debug_led_state
+                logger.debug("Setting LED to {}".format(debug_led_state))
+                this_ups.debug_led_state = int(debug_led_state)
+                debug_led_state = not debug_led_state
+
+                count = 0
+
+            while True:
+                debug_str = this_ups.read_string()
+                if(debug_str is None):
+                    break
+                logger.info("[ Controller message ] {}".format(debug_str))
+
         except:
             traceback.print_exc()
 
-        time.sleep(1)
+        time.sleep(0.1)
 
 
 def sleep_forever():
