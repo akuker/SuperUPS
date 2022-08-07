@@ -88,14 +88,15 @@ int main(void)
     while (1)
     {
         adc_step();
-        ups_step();
+        // Only update the UPS state machine approximately every 100ms
+        counter++;
+        if(counter > 99){
+            ups_step();
+            counter = 0;
+        }
         pwr_ctrl_step();
         gpios_step();
-        counter++;
-        if (counter > 999){
-            counter = 0;
-            debug_output();
-        }
+        debug_output();
         delay_ms(1);
     }
 }
