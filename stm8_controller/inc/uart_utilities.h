@@ -19,3 +19,4 @@ extern ring_buffer_t stdout_ringbuffer;
 
 int putchar(int c);
 void uart_init();
+void print_build_date();

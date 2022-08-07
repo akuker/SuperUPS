@@ -23,6 +23,10 @@ static const char build_date[] = __DATE__; // the format is "Jan  1 2000"
 static const char build_time[] = __TIME__; // the format is "00:00:00"
 static const char device_id_string[] = "SuperUPS controller";
 
+static uint8_t build_date_crc8;
+static uint8_t device_id_crc8;
+
+
 // This is referenced by the printf function
 int putchar(int c)
 {
@@ -84,11 +88,17 @@ void uart_init()
     /* Create and initialize the character buffer */
     ring_buffer_init(&stdout_ringbuffer);
 #endif
-    uint8_t build_date_crc8 = calculate_build_date_crc();
-    uint8_t device_id_crc8 = calculate_device_id();
 
-    printf("Build Date: %s %s CRC: %02X Device: %02X\n\r", build_date, build_time, build_date_crc8, device_id_crc8);
+    build_date_crc8 = calculate_build_date_crc();
+    device_id_crc8 = calculate_device_id();
 
     i2c_register_values[I2C_BUILD_VERSION] = build_date_crc8;
     i2c_register_values[I2C_DEVICE_ID] = device_id_crc8;
+
+    print_build_date();
+}
+
+void print_build_date(){
+
+    printf("Build Date: %s %s CRC: %02X Device: %02X\n\r", build_date, build_time, build_date_crc8, device_id_crc8);
 }
