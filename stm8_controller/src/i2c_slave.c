@@ -133,7 +133,7 @@ void i2c_init(void)
 	/* Set I2C registers for 7Bits Address */
 	I2C->CR1 |= 0x01;						   // Enable I2C peripheral
 	I2C->CR2 = 0x04;						   // Enable I2C acknowledgement
-	I2C->FREQR = 16;						   // Set I2C Freq value (16MHz)
+	I2C->FREQR = 1;							   // Set I2C Freq value (1MHz)
 	I2C->OARL = (uint8_t)(SLAVE_ADDRESS << 1); // set slave address to 0x51 (put 0xA2 for the register dues to7bit address)
 	I2C->OARH = 0x40;						   // Set 7bit address mode
 
