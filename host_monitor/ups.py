@@ -13,11 +13,12 @@
 import smbus
 import inspect
 import logging
+import enum
 
 
 class SuperUPS:
 
-    class States(int):
+    class States(enum.Enum):
         STATE_DISABLED = 0
         """Invalid state - not used by the controller."""
         STATE_WAIT_OFF = 1
@@ -63,11 +64,17 @@ class SuperUPS:
 
     def __init__(self, i2c_address=0x52):
         self.i2c_address = i2c_address
-        self.bus = smbus.SMBus(1)
-        if(self.interface_version != self.EXPECTED_INTERFACE_VERSION):
-            print("WARNING: Unexpected interface version. SuperUPS may not work properly")
-        self.cached_test_mode = False
-        self.string_cache = ""
+        self.logger = logging.getLogger('upsdaemon')
+        try:
+            self.bus = smbus.SMBus(1)
+            if(self.interface_version != self.EXPECTED_INTERFACE_VERSION):
+                print("WARNING: Unexpected interface version. SuperUPS may not work properly")
+            self.cached_test_mode = False
+            self.string_cache = ""
+        except BaseException as err:
+            self.logger.warning("Unable to connect to UPS controller: " + str(err))
+            self.bus = None
+            self.cached_test_mode = False
 
     def __del__(self):
         self.bus.close()
@@ -97,11 +104,9 @@ class SuperUPS:
                     self.string_cache = self.string_cache + chr(next_character)
 
         return None
-
     #endregion
 
     #region Voltages
-
     @property
     def input_voltage_raw(self):
         return self.bus.read_byte_data(self.i2c_address, self.I2C_ADC_VOLTAGE_IN)
@@ -160,7 +165,6 @@ class SuperUPS:
         self.output_voltage_raw = self._convert_voltage_to_raw(new_value)
 
     def _convert_raw_to_voltage(self, raw_adc_value):
-        logger = logging.getLogger('upsdaemon')
         r1 = self.r1_value
         r2 = self.r2_value
         # voltage into adc..... (raw_voltage/256) * 3.3
@@ -169,15 +173,14 @@ class SuperUPS:
         voltage_out = (raw_adc_value/256) * 3.3
         voltage_in = (r1 + r2) * (voltage_out / r2)
         return_path = self._convert_voltage_to_raw(voltage_in)
-        logger.debug("r1: {r1} r2: {r2} raw_in:{raw_input} adc_v:{adc_v} actual_v:{output} test_value:{test_value}".format(r1=r1, r2=r2, raw_input=raw_adc_value, adc_v=voltage_out, output=voltage_in, test_value=return_path))
+        self.logger.debug("r1: {r1} r2: {r2} raw_in:{raw_input} adc_v:{adc_v} actual_v:{output} test_value:{test_value}".format(r1=r1, r2=r2, raw_input=raw_adc_value, adc_v=voltage_out, output=voltage_in, test_value=return_path))
         return voltage_in
 
     def _convert_voltage_to_raw(self, voltage):
-        logger = logging.getLogger('upsdaemon')
         r1 = self.r1_value
         r2 = self.r2_value
         raw_voltage = (voltage * r2)/(r1+r2) * (256/3.3)
-        logger.debug("r1: {r1} r2: {r2} voltage:{voltage} raw_value:{raw_value}".format(r1=r1, r2=r2, voltage=voltage, raw_value=raw_voltage))
+        self.logger.debug("r1: {r1} r2: {r2} voltage:{voltage} raw_value:{raw_value}".format(r1=r1, r2=r2, voltage=voltage, raw_value=raw_voltage))
         return int(raw_voltage)
     
     #endregion
@@ -265,7 +268,6 @@ class SuperUPS:
     @shutdown_voltage_threshold.setter
     def shutdown_voltage_threshold(self, new_value):
         self.shutdown_voltage_threshold_raw = self._convert_voltage_to_raw(new_value)
-
     #endregion 
 
     @property
@@ -280,6 +282,10 @@ class SuperUPS:
             self.i2c_address, self.I2C_CURENT_STATE, new_value)
 
     @property
+    def current_state_string(self):
+        return str(SuperUPS.States(self.current_state))
+
+    @property
     def r1_value(self):
         return self.bus.read_byte_data(self.i2c_address, self.I2C_VOLTAGE_DIVIDER_R1_VALUE)
 
@@ -287,6 +293,7 @@ class SuperUPS:
     def r1_value(self, new_value):
         assert self.cached_test_mode, str(inspect.currentframe().f_code.co_name) + \
             " can only be modified in test mode"
+        self.cached_r1 = new_value
         self.bus.write_byte_data(
             self.i2c_address, self.I2C_VOLTAGE_DIVIDER_R1_VALUE, new_value)
 
@@ -298,6 +305,7 @@ class SuperUPS:
     def r2_value(self, new_value):
         assert self.cached_test_mode, str(inspect.currentframe().f_code.co_name) + \
             " can only be modified in test mode"
+        self.cached_r2 = new_value
         self.bus.write_byte_data(self.i2c_address, self.I2C_VOLTAGE_DIVIDER_R2_VALUE, new_value)
 
     @property
@@ -324,7 +332,7 @@ class SuperUPS:
     def power_button_state(self):
         return self.bus.read_byte_data(self.i2c_address, self.I2C_POWER_BUTTON_STATE)
 
-    @current_state.setter
+    @power_button_state.setter
     def power_button_state(self, new_value):
         assert self.cached_test_mode, str(inspect.currentframe().f_code.co_name) + \
             " can only be modified in test mode"
@@ -335,7 +343,7 @@ class SuperUPS:
     def aux_button_state(self):
         return self.bus.read_byte_data(self.i2c_address, self.I2C_AUX_BUTTON_STATE)
 
-    @current_state.setter
+    @aux_button_state.setter
     def aux_button_state(self, new_value):
         assert self.cached_test_mode, str(inspect.currentframe().f_code.co_name) + \
             " can only be modified in test mode"
@@ -346,7 +354,7 @@ class SuperUPS:
     def debug_led_state(self):
         return self.bus.read_byte_data(self.i2c_address, self.I2C_DEBUG_LED_STATE)
 
-    @current_state.setter
+    @debug_led_state.setter
     def debug_led_state(self, new_value):
         self.bus.write_byte_data(
             self.i2c_address, self.I2C_DEBUG_LED_STATE, new_value)
@@ -382,6 +390,8 @@ class SuperUPS:
             return False
         return True
 
+    def is_invalid(self):
+        return not self.is_valid()
 
 
 if __name__ == "__main__":
