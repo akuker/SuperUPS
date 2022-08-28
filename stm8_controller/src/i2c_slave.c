@@ -14,10 +14,12 @@
 //---------------------------------------------------------------------------
 #include "i2c_slave.h"
 #include "i2c_register_data.h"
+#include "uart_utilities.h"
 #include <stdio.h>
 
-u8 *u8_MyBuffp;
-u8 MessageBegin;
+static u8 register_num;
+static u8 *u8_MyBuffp;
+static u8 MessageBegin;
 volatile u8 i2c_counter = 0;
 
 static void I2C_transaction_begin(void)
@@ -33,7 +35,7 @@ static void I2C_transaction_end(void)
 
 static void I2C_byte_received(u8 u8_RxData)
 {
-	printf("!");
+	register_num = u8_RxData;
 	if (MessageBegin == TRUE && u8_RxData < I2C_REGISTERS_SIZE)
 	{
 		u8_MyBuffp = &i2c_register_values[u8_RxData];
@@ -45,6 +47,18 @@ static void I2C_byte_received(u8 u8_RxData)
 
 static u8 I2C_byte_write(void)
 {
+	if (register_num == I2C_CHARACTER_BUFFER)
+	{
+
+#ifdef STM8_I2C_STDIO
+		char ret_data;
+		if (ring_buffer_dequeue(&stdout_ringbuffer, &ret_data))
+		{
+			return (u8)ret_data;
+		}
+#endif
+		return U8_MAX;
+	}
 	if (u8_MyBuffp <= &i2c_register_values[I2C_REGISTERS_SIZE - 1])
 		return *(u8_MyBuffp++);
 	else
@@ -119,7 +133,7 @@ void i2c_init(void)
 	/* Set I2C registers for 7Bits Address */
 	I2C->CR1 |= 0x01;						   // Enable I2C peripheral
 	I2C->CR2 = 0x04;						   // Enable I2C acknowledgement
-	I2C->FREQR = 16;						   // Set I2C Freq value (16MHz)
+	I2C->FREQR = 1;							   // Set I2C Freq value (1MHz)
 	I2C->OARL = (uint8_t)(SLAVE_ADDRESS << 1); // set slave address to 0x51 (put 0xA2 for the register dues to7bit address)
 	I2C->OARH = 0x40;						   // Set 7bit address mode
 

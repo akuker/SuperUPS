@@ -11,6 +11,7 @@
 
 #include "ups_constants.h"
 #include "i2c_register_data.h"
+#include <stdio.h>
 
 static uint8_t *current_state = &i2c_register_values[I2C_CURENT_STATE];
 static uint8_t *input_voltage = &i2c_register_values[I2C_ADC_VOLTAGE_IN];
@@ -67,11 +68,11 @@ void ups_step()
 
     case STATE_RUNNING:
         // If the input voltage is off/low and the super capacitors voltage
-        // is too low, turn off the mosfet
+        // is too low, start a countdown to shut off the power output
         if ((*input_voltage <= *off_voltage_threshold) && (*ups_voltage <= *ups_power_valid_threshold))
         {
-            *mosfet_enable = 0;
-            *power_loss_delay_counter = 10;
+            // function gets called about every 100ms. Delay 5s
+            *power_loss_delay_counter = 50;
             *current_state = STATE_POWER_LOSS_SHUTDOWN_DELAY;
         }
         // Check to see if the host has commanded a power cycle
@@ -85,35 +86,37 @@ void ups_step()
             }
             if (*commanded_power_cycle_countdown == 0)
             {
-                // turn off the mosfet and wait for powercycle before
-                // turning back on.
-                *commanded_power_cycle_counter = 10;
+                // Give the Pi 5 seconds to shut down
+                *commanded_power_cycle_counter = 50;
                 *current_state = STATE_COMMANDED_POWER_CYCLE_DELAY;
-                *mosfet_enable = 0;
             }
         }
         break;
 
     case STATE_POWER_LOSS_SHUTDOWN_DELAY:
-        // shutdown due to power failure; delay so the pi can safely power cycle
+        // delay so the pi can safely power cycle
         if (*power_loss_delay_counter > 0)
         {
-            *power_loss_delay_counter--;
+            *power_loss_delay_counter = *power_loss_delay_counter - 1;
         }
-        if (*power_loss_delay_counter == 0)
+        else
         {
+            // shutdown due to power failure; 
             *current_state = STATE_POWER_LOSS_SHUTDOWN;
+            *mosfet_enable = 0;
         }
+        break;
 
     case STATE_COMMANDED_POWER_CYCLE_DELAY:
         // shutdown due to power-off request; delay so the pi can safely power cycle
         if (*commanded_power_cycle_counter > 0)
         {
-            *commanded_power_cycle_counter--;
+            *commanded_power_cycle_counter = *commanded_power_cycle_countdown - 1;
         }
         if (*commanded_power_cycle_counter == 0)
         {
             *current_state = STATE_WAIT_OFF;
+            *mosfet_enable = 0;
         }
         break;
     }

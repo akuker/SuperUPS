@@ -35,4 +35,6 @@ void init_register_data()
     i2c_register_values[I2C_VOLTAGE_DIVIDER_R2_VALUE] = R2;
     i2c_register_values[I2C_TEST_MODE_ENABLE] = 0;
     i2c_register_values[I2C_INTERFACE_VERSION] = 1;
+    // Default to ON so we can tell if the MCU started up
+    i2c_register_values[I2C_DEBUG_LED_STATE] = 1;
 }

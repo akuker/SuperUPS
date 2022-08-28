@@ -12,12 +12,13 @@ set(CMAKE_C_FLAGS_INIT "")
 set(CMAKE_EXE_LINKER_FLAGS_INIT "")
 
 project(STM8Blink C)
-SET(CMAKE_C_FLAGS "-mstm8 --std-c99")
+SET(CMAKE_C_FLAGS "-mstm8 --std-c99 -DSTM8_UART_STDIO -DSTM8_I2C_STDIO")
 set(SPL_PATH external/spl/)
+set(RING_BUF_PATH external/ringbuffer)
 set(LIB_CRC_PATH external/libcrc)
 set(SPL_SRC_PATH ${SPL_PATH}/src)
 set(LIB_CRC_SRC_PATH ${LIB_CRC_PATH}/src)
-include_directories(${SPL_PATH}/inc ${LIB_CRC_PATH}/include ${SPL_PATH}/conf AFTER)
+include_directories(${SPL_PATH}/inc ${LIB_CRC_PATH}/include ${SPL_PATH}/conf ${RING_BUF_PATH} AFTER)
 include_directories(./inc BEFORE)
 
 # Configure which STM8S we are using
@@ -26,13 +27,14 @@ add_definitions(-DSTM8S103)
 add_executable(main
     src/main.c
     src/ups_state_machine.c
-    src/mosfet_handler.c
+    src/power_control.c
     src/i2c_register_data.c
     src/i2c_slave.c
     src/adc_utilities.c
     src/timer4_utilities.c
     src/uart_utilities.c
     src/gpio_handler.c
+    ${RING_BUF_PATH}/ringbuffer.c
     ${LIB_CRC_SRC_PATH}/crc8.c
     ${SPL_SRC_PATH}/stm8s_adc1_ClearFlag.c
     ${SPL_SRC_PATH}/stm8s_adc1_Cmd.c
