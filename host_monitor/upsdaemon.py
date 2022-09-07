@@ -89,7 +89,7 @@ def monitor():
 
             if (count % 10) == 0:
                 # Toggle LED to show that this service is running
-                logger.debug("Setting LED to {}".format(debug_led_state))
+                logger.info("[Input Voltage: %0.2f] Setting LED to %d" % (v_in, debug_led_state))
                 this_ups.debug_led_state = int(debug_led_state)
                 debug_led_state = not debug_led_state
 

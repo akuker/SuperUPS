@@ -376,18 +376,21 @@ class SuperUPS:
         print("({num:2}) I2C_SHUTDOWN_THRESH = {value}".format(num=self.I2C_SHUTDOWN_THRESH, value=self.shutdown_voltage_threshold))
         print("({num:2}) I2C_VOLTAGE_DIVIDER_R1_VALUE = {value}".format(num=self.I2C_VOLTAGE_DIVIDER_R1_VALUE, value=self.r1_value))
         print("({num:2}) I2C_VOLTAGE_DIVIDER_R2_VALUE = {value}".format(num=self.I2C_VOLTAGE_DIVIDER_R2_VALUE, value=self.r2_value))
-        # print(("{num}) I2C_INTERFACE_VERSION = {value}".format(num=self.I2C_INTERFACE_VERSION , )
-        # print("{num} I2C_BUILD_VERSION = {value}".format(num=self.I2C_BUILD_VERSION , )
-        # print("{num} I2C_DEVICE_ID = {value}".format(num=self.I2C_DEVICE_ID , )
+        print("({num}) I2C_INTERFACE_VERSION = {value}".format(num=self.I2C_INTERFACE_VERSION , value=self.interface_version))
+        print("({num}) I2C_BUILD_VERSION = {value}".format(num=self.I2C_BUILD_VERSION , value=self.build_id))
+        #print("{num} I2C_DEVICE_ID = {value}".format(num=self.I2C_DEVICE_ID , value=self.)
         print("({num:2}) I2C_POWER_BUTTON_STATE = {value}".format(num=self.I2C_POWER_BUTTON_STATE, value=self.power_button_state))
         print("({num:2}) I2C_AUX_BUTTON_STATE = {value}".format(num=self.I2C_AUX_BUTTON_STATE, value=self.aux_button_state))
         print("({num:2}) I2C_DEBUG_LED_STATE = {value}".format(num=self.I2C_DEBUG_LED_STATE, value=self.debug_led_state))
 
     def is_valid(self):
         if(self.bus is None):
+            print("Warning: self.bus is none")
             return False
-        if(self.interface_version != self.EXPECTED_INTERFACE_VERSION):
-            return False
+        #TODO: Figure out the interface version thing
+        #if(self.interface_version != self.EXPECTED_INTERFACE_VERSION):
+        #    print("Interface version is not as expected")
+        #    return False
         return True
 
     def is_invalid(self):
