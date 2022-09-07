@@ -1,4 +1,14 @@
-#!/usr/bin/python -u
+#!/usr/bin/python3
+# ---------------------------------------------------------------------------
+#
+# 	Raspberry Pi SuperUPS
+#
+# 	Copyright (C) 2020 Scott Baker
+# 	Copyright (C) 2022 akuker
+#
+# 	[ Controller interface for the SuperUPS ]
+#
+# ---------------------------------------------------------------------------
 
 import argparse
 import daemon
@@ -18,15 +28,15 @@ glo_HupReceived = False
 def parse_args():
     parser = argparse.ArgumentParser()
 
-    defs = {"pigpio": True,
-            "diags": False,
+    defs = {"diags": False,
             "showErrors": False,
             "time": None,
             "outputFile": None,
             "outputAppend": False,
             "shutdownCommand": "/sbin/shutdown -h now",
             "threshold": None,
-            "daemon": False}
+            "daemon": False,
+            "enable_test": False}
 
     _help = 'Delay in seconds (default: %s)' % defs['time']
     parser.add_argument(
