@@ -486,13 +486,6 @@
         "microvia_drill": 0.1,
         "name": "12vPower",
         "nets": [
-          "+12V",
-          "Net-(C1-Pad1)",
-          "Net-(C1-Pad2)",
-          "Net-(C2-Pad2)",
-          "Net-(C3-Pad2)",
-          "Net-(C4-Pad2)",
-          "Net-(J1-Pad2)",
           "VIN"
         ],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
@@ -533,8 +526,7 @@
         "microvia_drill": 0.1,
         "name": "5vPower",
         "nets": [
-          "+5V",
-          "Net-(C18-Pad1)"
+          "+5V"
         ],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
@@ -606,10 +598,6 @@
     [
       "c783ab4c-6f9b-478c-bda9-be5294b6d6a7",
       "Raspberry Pi Connectors"
-    ],
-    [
-      "8f754e91-02e2-4214-a3e4-a044379db8a6",
-      "Buck Converter"
     ]
   ],
   "text_variables": {}
