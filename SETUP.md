@@ -67,9 +67,10 @@ python3 ups.py
 ***This section is NOT complete!!!***
 
 ```
-sudo cp startup/ups.service /lib/systemd/system/
-sudo chmod 644 /lib/systemd/system/ups.service
+sudo cp SuperUPS/host_monitor/ups*.py /usr/bin/
+sudo cp SuperUPS/host_monitor/ups.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable ups.service
+sudo systemctl start ups
 ```
 

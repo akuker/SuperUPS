@@ -1,0 +1,12 @@
+[Unit]
+Description=SuperUPS daemon
+After=network.target
+
+[Service]
+Type=idle
+Restart=always
+ExecStart=/usr/bin/python3 -u /usr/bin/upsdaemon.py
+SyslogIdentifier=SuperUPS
+
+[Install]
+WantedBy=multi-user.target
