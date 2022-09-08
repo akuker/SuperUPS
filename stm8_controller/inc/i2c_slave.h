@@ -22,7 +22,7 @@
 #include "stm8s.h"
 #include "stm8s_itc.h"
 
-#define SLAVE_ADDRESS 0x51
+#define SLAVE_ADDRESS 0x52
 
 void i2c_init(void);
 // Different compilers have different syntax for registering an interrupt

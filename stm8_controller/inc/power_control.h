@@ -11,5 +11,5 @@
 
 #pragma once
 
-void handle_mosfet();
-void mosfet_init();
+void pwr_ctrl_step();
+void power_control_init();

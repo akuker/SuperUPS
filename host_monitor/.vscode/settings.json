@@ -1,0 +1,14 @@
+{
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.pydocstyleEnabled": false,
+    "python.linting.pycodestyleArgs": [
+        "--max-line-length=120",
+        "--max-doc-length=120"
+    ],
+    "python.linting.pycodestyleEnabled": true,
+    "editor.formatOnSave": true,
+    "python.formatting.autopep8Args": [
+        "--max-line-length 120"
+    ]
+}

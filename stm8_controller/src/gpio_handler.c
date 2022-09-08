@@ -46,9 +46,18 @@ void gpios_init()
     i2c_register_values[I2C_AUX_BUTTON_STATE] = 1;
     GPIO_Init(GPIOC, GPIO_PIN_5, GPIO_MODE_IN_FL_NO_IT);
     GPIO_Init(GPIOC, GPIO_PIN_6, GPIO_MODE_IN_FL_NO_IT);
+    GPIO_Init(GPIOC, GPIO_PIN_7, GPIO_MODE_OUT_OD_LOW_SLOW);
 }
 void gpios_step()
 {
+    if (i2c_register_values[I2C_DEBUG_LED_STATE])
+    {
+        GPIO_WriteLow(GPIOC, GPIO_PIN_7);
+    }
+    else
+    {
+        GPIO_WriteHigh(GPIOC, GPIO_PIN_7);
+    }
 
     shutdown_button_states[current_idx] = GPIO_ReadInputPin(GPIOC, GPIO_PIN_5);
     auxiliary_button_states[current_idx] = GPIO_ReadInputPin(GPIOC, GPIO_PIN_6);

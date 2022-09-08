@@ -15,18 +15,34 @@
 #include "i2c_register_data.h"
 #include "uart_utilities.h"
 
+#ifdef STM8_I2C_STDIO
+ring_buffer_t stdout_ringbuffer;
+#endif
+
 static const char build_date[] = __DATE__; // the format is "Jan  1 2000"
 static const char build_time[] = __TIME__; // the format is "00:00:00"
 static const char device_id_string[] = "SuperUPS controller";
 
+static uint8_t build_date_crc8;
+static uint8_t device_id_crc8;
+
+
 // This is referenced by the printf function
 int putchar(int c)
 {
+#ifdef STM8_I2C_STDIO
+    ring_buffer_queue(&stdout_ringbuffer, (char)c);
+    ring_buffer_queue(&stdout_ringbuffer, (char)(c >> 8));
+
+#endif
+
+#ifdef STM8_UART_STDIO
     /* Write a character to the UART1 */
     UART1_SendData8(c);
     /* Loop until the end of transmission */
     while (UART1_GetFlagStatus(UART1_FLAG_TXE) == RESET)
         ;
+#endif
     return (c);
 }
 
@@ -62,16 +78,27 @@ uint8_t calculate_device_id()
 
 void uart_init()
 {
+#ifdef STM8_UART_STDIO
     UART1_DeInit();
     UART1_Init(9600, UART1_WORDLENGTH_8D,
                UART1_STOPBITS_1, UART1_PARITY_NO,
                UART1_SYNCMODE_CLOCK_DISABLE, UART1_MODE_TXRX_ENABLE);
+#endif
+#ifdef STM8_I2C_STDIO
+    /* Create and initialize the character buffer */
+    ring_buffer_init(&stdout_ringbuffer);
+#endif
 
-    uint8_t build_date_crc8 = calculate_build_date_crc();
-    uint8_t device_id_crc8 = calculate_device_id();
-
-    printf("Build Date: %s %s CRC: %02X Device: %02X\n\r", build_date, build_time, build_date_crc8, device_id_crc8);
+    build_date_crc8 = calculate_build_date_crc();
+    device_id_crc8 = calculate_device_id();
 
     i2c_register_values[I2C_BUILD_VERSION] = build_date_crc8;
     i2c_register_values[I2C_DEVICE_ID] = device_id_crc8;
+
+    print_build_date();
+}
+
+void print_build_date(){
+
+    printf("Build Date: %s %s CRC: %02X Device: %02X\n\r", build_date, build_time, build_date_crc8, device_id_crc8);
 }
