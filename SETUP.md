@@ -64,13 +64,11 @@ python3 ups.py
 
 
 ## To setup the UPS monitor to run automatically
-***This section is NOT complete!!!***
-
 ```
-sudo cp SuperUPS/host_monitor/ups*.py /usr/bin/
-sudo cp SuperUPS/host_monitor/ups.service /etc/systemd/system/
+sudo cp SuperUPS/host_monitor/ups*.py /usr/local/bin/
+sudo cp SuperUPS/host_monitor/superups.service /etc/systemd/system/
 sudo systemctl daemon-reload
-sudo systemctl enable ups.service
-sudo systemctl start ups
+sudo systemctl enable superups.service
+sudo systemctl start superups
 ```
 
