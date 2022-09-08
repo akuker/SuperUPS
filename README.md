@@ -6,6 +6,8 @@ This is a fork of the original Supercapacitor UPS board for a Raspberry Pi by Sc
 
 This fork is intended to improve producability, documentation and provide tighter integration with the RaSCSI project. This project does NOT require a RaSCSI to function.
 
+See [SETUP.md](SETUP.md) for setup instructions
+
 ## Very early 3D renderings
 
 <a href="docs/board_top.png"><img src="docs/board_top.png" style="width: 250px" /></a>
@@ -28,7 +30,7 @@ Note: Scott Baker's original design also included a version of the UPS board tha
 
 # Microcontroller manager
 
-An ATTiny85 is used as the controller for the UPS. The microcontroller monitors the battery voltage and the incoming voltage, and switches the load on and off. The microcontroller supports I2C and can be interfaced directly to a raspberry pi.
+~~An ATTiny85 is used as the controller for the UPS.~~ *Now a STM8 due to the parts shortages.* The microcontroller monitors the battery voltage and the incoming voltage, and switches the load on and off. The microcontroller supports I2C and can be interfaced directly to a raspberry pi.
 
 The microcontroller is also responsible for noticing when power has been restored, and turning the load back on.
 
@@ -38,13 +40,14 @@ The microcontroller is also responsible for noticing when power has been restore
 
 A Linux daemon, running on the raspberry pi, monitors the voltage by making i2c queries to the ups board's microcontroller. If the daemon sees the incoming voltage drop, then it will initiate shutdown, by running the `shutdown` command. The shutdown command will terminate processes, unmount the filesystem, etc. 
 
-As a final step during shutdown, Linux systemd will execute a script that will tell the microcontroller to turn off the load. At this point, the root filesystem has been remounted readonly, so the board can safely be powered off. 
+~~As a final step during shutdown, Linux systemd will execute a script that will tell the microcontroller to turn off the load. At this point, the root filesystem has been remounted readonly, so the board can safely be powered off. ~~
 
-# smb-pi-lib
+# ~~smb-pi-lib~~
 
-Scott Baker has a second repository that has common code for a number of my projects, including the ups. It's located at [https://github.com/sbelectronics/smb-pi-lib](https://github.com/sbelectronics/smb-pi-lib)
+~~Scott Baker has a second repository that has common code for a number of my projects, including the ups. It's located at [https://github.com/sbelectronics/smb-pi-lib](https://github.com/sbelectronics/smb-pi-lib)~~
 
 # Acknowledgements
 
 * Scott Baker for doing a fantastic supercapcitor based UPS design.
 * David Gesswein's MFM Emulator was the inspiration for the supercapacitor charing circuit.
+
