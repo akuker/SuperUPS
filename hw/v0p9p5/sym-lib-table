@@ -1,6 +1,0 @@
-(sym_lib_table
-  (lib (name "TPS54331DR")(type "KiCad")(uri "${KIPRJMOD}/TPS54331DR.kicad_sym")(options "")(descr ""))
-  (lib (name "supercap_library")(type "KiCad")(uri "${KIPRJMOD}/supercap_library.kicad_sym")(options "")(descr ""))
-  (lib (name "641737-1")(type "KiCad")(uri "${KIPRJMOD}/641737-1.kicad_sym")(options "")(descr ""))
-  (lib (name "171826-4")(type "Legacy")(uri "${KIPRJMOD}/171826-4.lib")(options "")(descr ""))
-)
