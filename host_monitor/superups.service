@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=idle
 Restart=always
-ExecStart=/usr/bin/python3 -u /usr/local/bin/upsdaemon.py
+ExecStart=/usr/bin/python3 -u /usr/local/bin/superupsdaemon.py
 SyslogIdentifier=SuperUPS
 
 [Install]

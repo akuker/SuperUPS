@@ -54,7 +54,7 @@ sudo pip3 install smbus
 ## To manually start the UPS monitor
 ```
 cd ~/SuperUPS/host_monitor/
-python3 ./upsmonitor.py
+python3 ./superupsdaemon.py
 ```
 
 ## To dump all of the registers from the UPS controller
@@ -65,7 +65,7 @@ python3 ups.py
 
 ## To setup the UPS monitor to run automatically
 ```
-sudo cp SuperUPS/host_monitor/ups*.py /usr/local/bin/
+sudo cp SuperUPS/host_monitor/*.py /usr/local/bin/
 sudo cp SuperUPS/host_monitor/superups.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable superups.service
