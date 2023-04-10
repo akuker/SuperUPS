@@ -1,0 +1,4 @@
+Ref,Val,Package,PosX,PosY,Rot,Side
+"J1","Conn_01x03","PinHeader_1x03_P2.54mm_Vertical",-84.468000,-117.222000,180.000000,bottom
+"J7","STLinkV2 Connector","PinHeader_1x04_P2.54mm_Vertical",-56.041000,-124.820000,180.000000,bottom
+"J8","Raspberry_Pi_2_3","PinSocket_2x20_P2.54mm_Vertical",-58.300000,-104.770000,-90.000000,bottom

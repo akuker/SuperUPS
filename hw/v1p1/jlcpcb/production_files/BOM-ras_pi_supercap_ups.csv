@@ -1,0 +1,53 @@
+Comment,Designator,Footprint,LCSC
+Fuse_Small,"F1,F2",Fuse_1206_3216Metric,C140470
+10u,"C12,C6,C7,C9",C_0805_2012Metric,C15850
+10n,C18,C_0805_2012Metric,C1710
+10k,"R1,R11,R13,R20,R26",R_0805_2012Metric,C17414
+4.7n,"C16,C19",C_0805_2012Metric,C1744
+0,R21,R_0805_2012Metric,C17477
+1k,"R10,R15,R16,R17,R18,R19",R_0805_2012Metric,C17513
+2.2k,"R12,R14,R2",R_0805_2012Metric,C17520
+200,R25,R_0805_2012Metric,C17540
+200,R28,R_0805_2012Metric,C17557
+332k,R22,R_0805_2012Metric,C17631
+49.9k,R24,R_0805_2012Metric,C17719
+4.7u,"C14,C15",C_0805_2012Metric,C1779
+68.1k,R23,R_0805_2012Metric,C17795
+SS54,"D10,D2,D4",D_SMA,C22452
+Green,"D3,D5,D6,D8",LED_0805_2012Metric,C2297
+100n,"C13,C17,C8",C_0805_2012Metric,C28233
+1u,"C10,C11",C_0805_2012Metric,C28323
+39p,C21,C_0805_2012Metric,C296098
+PTVSHC3D15VUH,"D1,D7",D_SOD-323,C2990493
+10 3W,"R3,R4",SMT_Resistor_4122,C306270
+KA431SMFTF,"U1,U2,U3,U4,U5",SOT-23,C3113
+Reset,SW1,SW_TS-1187A-B-A-B,C318884
+6.8uH,L1,Sunltech_SLO0530H,C325965
+1.5k,R27,R_0805_2012Metric,C4310
+33u,"C20,C22",C_0805_2012Metric,C432920
+1k,"R5,R6,R7,R8,R9",R_1206_3216Metric,C4410
+Barrel_Jack,J4,BarrelJack_Wuerth_6941xx301002,C521451
+STM8S003F3P,U7,TSSOP-20_4.4x6.5mm_P0.65mm,C52717
+AMS1117-3.3,U6,SOT-223-3_TabPin2,C6186
+D_Schottky_Small,D9,D_SMA,C8678
+TPS54331DR,U8,SOIC127P599X175-8N,C9865
+10F,C3,CP_Radial_D10.0mm_P5.00mm,
+171826-4,J5,TE_171826-4,
+10F,C1,CP_Radial_D10.0mm_P5.00mm,
+MountingHole,H1,MountingHole_2.7mm_M2.5,
+MountingHole,H2,MountingHole_2.7mm_M2.5,
+MountingHole,H4,MountingHole_2.7mm_M2.5,
+10F,C5,CP_Radial_D10.0mm_P5.00mm,
+MountingHole,H3,MountingHole_2.7mm_M2.5,
+10F,C4,CP_Radial_D10.0mm_P5.00mm,
+Conn_01x03,J3,PinHeader_1x03_P2.54mm_Vertical,
+Conn_01x05,J2,PinHeader_1x05_P2.54mm_Vertical,
+10F,C2,CP_Radial_D10.0mm_P5.00mm,
+SolderJumper_2_Open,JP2,SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm,
+Charge Enb,JP1,SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm,
+LEDs and Buttons,J6,PinHeader_1x04_P2.54mm_Vertical,
+Logo_Open_Hardware_Small,Z3,CE-Logo_8.5x6mm_SilkScreen,
+Raspberry_Pi_2_3,J8,PinSocket_2x20_P2.54mm_Vertical,
+Logo_Open_Hardware_Small,Z2,OSHW-Logo_7.5x8mm_SilkScreen,
+STLinkV2 Connector,J7,PinHeader_1x04_P2.54mm_Vertical,
+Conn_01x03,J1,PinHeader_1x03_P2.54mm_Vertical,
